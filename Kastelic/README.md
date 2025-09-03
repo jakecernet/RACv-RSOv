@@ -1,0 +1,1 @@
+V tem folderju so vaje, ki jih delamo pri Kastelicu za predmet RSO.
