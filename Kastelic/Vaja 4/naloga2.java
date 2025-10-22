@@ -1,13 +1,12 @@
-/* 
-Programsko bi želeli kreirati zbirko priimkov oseb. Pri tem bi želeli zagotoviti: zbirka oseb naj bo dinamična, realizirana z enostransko povezanim seznamom. 
-V zbirki shranjeni priimki naj predstavljajo množico. Javni vmesnik zbirke naj predstavljajo zgolj metode prikaziZbirko1/0, prikaziZbirko2/0, dodajPriimek/1. 
-PrikaziZbirko1 prikaze vse zapisane priimke od prvega do zadnjega, prikaziZbirko2 zadnjih 10 v zbirko vpisanih v obratnem časovnem vrstnem redu vpisa. 
-Metoda dodajPriimek doda s parametrom podan priimek/objekt s priimkov v zbirko.
-
-Operacije nad zbirko načrtujte tako, da bo njihova izvedba možna in če se le da, enostavna.
+/* Nova programska zbirka priimkov je glede na zapisane priimke abecedno urejena. 
+Zagotovite ustrezno dodajanje oseb, da bo zbirka ves čas urejena, prikaze z metodama prikaziNaprej in prikaziNazaj, 
+ki priimke zapisov zbirke podata na zaslon od prvega naprej proti koncu ali od zadnjega nazaj do prvega zapisanega. 
+Zapis zbirke naj bo tak, da bo omogočil izpis zadnjih 10 dodanih priimkov v obratnem časovnem vrstnem redu dodajanj elementov, metoda naj bo poimenovana zadnjih10. 
+Tudi tu uporabite ustrezno spisano metodo dodajPriimek/1 za dodajanje elementa.
+Opombi: zbirka naj bo glede priimkov še vedno množica, za določanje zadnjih desetih uvedite indeksiranje dodajanja elementov (oštevilčite jih).
 */
 
-public class naloga1 {
+public class naloga2 {
     public static void main(String[] args) {
         ZbirkaPriimkov zbirka = new ZbirkaPriimkov();
 
@@ -24,16 +23,20 @@ public class naloga1 {
         zbirka.dodajPriimek("Dolenec");
 
         System.out.println("Prikaz zbirke od prvega do zadnjega:");
-        zbirka.prikaziZbirko1();
+        zbirka.prikaziNaprej();
+
+        System.out.println("\nPrikaz zbirke od zadnjega do prvega:");
+        zbirka.prikaziNazaj();
 
         System.out.println("\nPrikaz zadnjih 10 priimkov v obratnem vrstnem redu:");
-        zbirka.prikaziZbirko2();
+        zbirka.zadnjih10();
     }
 
     public interface Zbirka {
         void dodajPriimek(String priimek);
-        void prikaziZbirko1();
-        void prikaziZbirko2();
+        void prikaziNaprej();
+        void prikaziNazaj();
+        void zadnjih10();
     }
 
     public static class ZbirkaPriimkov implements Zbirka {
@@ -51,26 +54,35 @@ public class naloga1 {
 
         @Override
         public void dodajPriimek(String priimek) {
-            if (!contains(priimek)) {
-                Node newNode = new Node(priimek);
+            if (priimek == null) return;
+            priimek = priimek.trim();
+            if (priimek.isEmpty()) return;
+
+            Node cur = head;
+            while (cur != null) {
+                if (cur.priimek.equalsIgnoreCase(priimek)) {
+                    return;
+                }
+                cur = cur.next;
+            }
+
+            Node newNode = new Node(priimek);
+            if (head == null || head.priimek.compareToIgnoreCase(priimek) > 0) {
                 newNode.next = head;
                 head = newNode;
+                return;
             }
-        }
 
-        private boolean contains(String priimek) {
             Node current = head;
-            while (current != null) {
-                if (current.priimek.equals(priimek)) {
-                    return true;
-                }
+            while (current.next != null && current.next.priimek.compareToIgnoreCase(priimek) < 0) {
                 current = current.next;
             }
-            return false;
+            newNode.next = current.next;
+            current.next = newNode;
         }
 
         @Override
-        public void prikaziZbirko2() {
+        public void prikaziNaprej() {
             Node current = head;
             while (current != null) {
                 System.out.println(current.priimek);
@@ -79,7 +91,20 @@ public class naloga1 {
         }
 
         @Override
-        public void prikaziZbirko1() {
+        public void prikaziNazaj() {
+            prikaziNazajHelper(head);
+        }
+
+        private void prikaziNazajHelper(Node node) {
+            if (node == null) {
+                return;
+            }
+            prikaziNazajHelper(node.next);
+            System.out.println(node.priimek);
+        }
+
+        @Override
+        public void zadnjih10() {
             String[] lastTen = new String[10];
             int count = 0;
 
