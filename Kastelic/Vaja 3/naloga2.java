@@ -46,7 +46,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import java.util.Scanner;
-import java.lang.Math;
 
 public class naloga2 extends Application {
     private int stopnja = 10; // Privzeta stopnja fraktala
