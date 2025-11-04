@@ -4,9 +4,6 @@ ki mu 'prištejemo' smer, hkrati pa odstranimo element iz repa kače (glave vrst
 Izvedite programsko simulacijo premika kače (premik 3 korake v smeri, spremenite smer, spet izvedete 3 korake. Vmes opazujete 'premikanje' kače
 */
 
-import java.util.Deque;
-import java.util.LinkedList; 
-
 public class naloga2 {
     public static void main(String[] args) {
         Kaca kaca = new Kaca(new Pozicija(0, 0), new Smer());
@@ -52,11 +49,11 @@ class Pozicija {
 }
 
 class Kaca {
-    private Deque<Pozicija> telo;
+    private DvojnaVrsta<Pozicija> telo;
     private Smer smer;
 
     public Kaca(Pozicija zacetnaPozicija, Smer zacetnaSmer) {
-        telo = new LinkedList<>();
+        telo = new DvojnaVrsta<>();
         telo.addFirst(zacetnaPozicija);
         this.smer = zacetnaSmer;
     }
@@ -106,5 +103,97 @@ class Smer {
     @Override
     public String toString() {
         return "Smer: (" + x + ", " + y + ")";
+    }
+}
+
+class DvojnaVrsta<T> {
+    private static class Vozlisce<E> {
+        E v;
+        Vozlisce<E> prev, next;
+
+        Vozlisce(E v) {
+            this.v = v;
+        }
+    }
+
+    private Vozlisce<T> head; // first
+    private Vozlisce<T> tail; // last
+    private int size;
+
+    public void addFirst(T e) {
+        Vozlisce<T> n = new Vozlisce<>(e);
+        if (head == null) {
+            head = tail = n;
+        } else {
+            n.next = head;
+            head.prev = n;
+            head = n;
+        }
+        size++;
+    }
+
+    public void addLast(T e) {
+        Vozlisce<T> n = new Vozlisce<>(e);
+        if (tail == null) {
+            head = tail = n;
+        } else {
+            n.prev = tail;
+            tail.next = n;
+            tail = n;
+        }
+        size++;
+    }
+
+    public T removeFirst() {
+        if (head == null)
+            return null;
+        T val = head.v;
+        head = head.next;
+        if (head != null)
+            head.prev = null;
+        else
+            tail = null;
+        size--;
+        return val;
+    }
+
+    public T removeLast() {
+        if (tail == null)
+            return null;
+        T val = tail.v;
+        tail = tail.prev;
+        if (tail != null)
+            tail.next = null;
+        else
+            head = null;
+        size--;
+        return val;
+    }
+
+    public T peekFirst() {
+        return head != null ? head.v : null;
+    }
+
+    public T peekLast() {
+        return tail != null ? tail.v : null;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Vozlisce<T> cur = head;
+        while (cur != null) {
+            sb.append(cur.v);
+            cur = cur.next;
+            if (cur != null)
+                sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
