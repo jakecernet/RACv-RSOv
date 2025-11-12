@@ -37,7 +37,7 @@ public class Test_3_segm_stevec extends Application {
                 s.overflow();
             }
         }));
-        t.setCycleCount(330);
+        t.setCycleCount(999);
         t.play();
     }
 }

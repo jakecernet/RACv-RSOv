@@ -1,0 +1,13 @@
+BlueJ run started: Wed Nov 12 13:59:54 CET 2025
+BlueJ version 5.2.1
+Java version 21.0.1
+JavaFX version 20.0.1+2
+Virtual machine: Java HotSpot(TM) 64-Bit Server VM 21.0.1+12-LTS-29 (Oracle Corporation)
+Running on: Windows 11 10.0 (amd64)
+Java Home: C:\Program Files\BlueJ\jdk
+----
+Detected language "english" based on iso639-2 code "slv"
+Opening project: E:\Github\RAČv\Kastelic\Vaja 6\naloga5
+1762952398947: Listening for JDWP connection on address: javadebug
+Connected to debug VM via dt_shmem transport...
+Communication with debug VM fully established.
