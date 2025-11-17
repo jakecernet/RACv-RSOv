@@ -11,7 +11,7 @@ public class naloga2 {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    izpisi100 izpisi = new izpisi100();
+                    izpisovanje izpisi = new izpisovanje();
                     try {
                         izpisi.izpisi100();
                     } catch (izjema03Liho e) {
@@ -25,7 +25,7 @@ public class naloga2 {
     }
 }
 
-class izpisi100{
+class izpisovanje{
     public void izpisi100() throws izjema03Liho {
         Random rand = new Random();
         int start = rand.nextInt(43) + 7; // Naključno število iz [7, 49]
