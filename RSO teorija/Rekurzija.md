@@ -67,7 +67,7 @@
         }
         ```
 
-- *Enostavne sledi za 1, 2, 3, 5*
+         *Enostavne sledi za 1, 2, 3, 5*
 
 ## Lastnosti
 
