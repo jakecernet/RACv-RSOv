@@ -8,3 +8,23 @@ Cilj vaje je implementacija in demonstracija obnašanja prometa na/po cesti. Pri
 Cesto realiziramo kot LinkedList  in uporabimo vmesnik Queue/vrsta s kombinacijo metod add/remove(izjeme) ali offer/poll(null/true/false). Element je vozilo, katerega privzeta minimalna dolžina je 1,5m, med vozili v stoječi vrsti naj bo vsaj 0,75m razdalje.
 
 Vozilo je minimalno opredeljeno z identifikacijo aka številka registracije/tablica, zaporedno številko vozila in svojo dolžino. Zaporedna številka: štejete generirane od 1 naprej po 1.
+
+Opomba:
+Kot vse strukture imajo tudi uporabljene kolekcije med drugim tudi metodo toString(). Sicer pa je običajno, da uporabite iteracijo čez elemente kolekcije (prilagojen izpis, količina,...
+
+a)	Uporabite metodo forEach, če ta obstaja:
+```java
+kolekcija.forEach( element -> {System.out.println(element);} );
+```
+
+b)	Uporabite iterator:
+```java
+Iterator iterator = kolekcija.iterator();
+
+while (iterator.hasNext()) {
+    System.out.print(iterator.next() + " ");
+}
+```
+
+
+Ne pozabite, da mora tudi element/vozilo imeti v obvezni opremi ta-pravo metodo toString()

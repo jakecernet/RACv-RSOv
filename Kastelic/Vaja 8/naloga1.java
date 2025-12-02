@@ -14,53 +14,53 @@ import java.util.LinkedList;
 
 public class naloga1 {
     public static void main(String[] args) {
-        Queue<Vozilo> cesta1pas1 = new LinkedList<Vozilo>();
-        final int dolzinaCeste = 1450;
-        final int dolzinaVozila = 5;
-        final int maxVozil = dolzinaCeste / dolzinaVozila;
+        final int dolzinaCeste = 1450; // dolžina ceste v metrih
+        Queue<Vozilo> cesta = new LinkedList<>();
 
-        Thread nit = new Thread(() -> {
-            while (true) {
-                synchronized (cesta1pas1) {
-                    if (cesta1pas1.size() < maxVozil) {
-                        Vozilo novoVozilo = new Vozilo();
-                        cesta1pas1.add(novoVozilo);
-                    } else {
-                        break;
-                    }
-                }
+        long startTime = System.currentTimeMillis();
+
+        int skupnaDolzinaVozil = 0;
+        int zaporednaStevilka = 1;
+
+        while (true) {
+            int dolzinaVozila = generirajDolzinoVozila();
+            if (skupnaDolzinaVozil + dolzinaVozila + (cesta.size() * 0.75) > dolzinaCeste) {
+                break; // Ne moremo več dodati vozila
             }
-        });
-        nit.start();
-
-        try {
-            nit.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            Vozilo novoVozilo = new Vozilo("REG" + zaporednaStevilka, zaporednaStevilka, dolzinaVozila);
+            cesta.add(novoVozilo);
+            skupnaDolzinaVozil += dolzinaVozila;
+            zaporednaStevilka++;
         }
 
-        System.out.println("Čas polnjenja: " + System.currentTimeMillis());
-        System.out.println("Število vozil v vrsti: " + cesta1pas1.size());
-        System.out.println("Skupna dolžina vozil v vrsti: " + (cesta1pas1.size() * dolzinaVozila));
-        System.out.println("Neizrabljen prostor na cesti: " + (dolzinaCeste - (cesta1pas1.size() * dolzinaVozila)));
+        long endTime = System.currentTimeMillis();
+        long casPolnjenja = endTime - startTime;
+
+        System.out.println("Čas polnjenja ceste: " + casPolnjenja + " ms");
+        System.out.println("Število vozil na cesti: " + cesta.size());
+        System.out.println("Skupna dolžina vozil: " + skupnaDolzinaVozil + " m");
+        System.out.println("Neizrabljen prostor na cesti: " + (dolzinaCeste - skupnaDolzinaVozil - (cesta.size() * 0.75)) + " m");
+    }
+
+    private static int generirajDolzinoVozila() {
+        // Generiraj dolžino vozila med 1.5m in 12m, z upoštevanjem verjetnosti
+        double rand = Math.random();
+        if (rand < 0.998) {
+            return 5 + (int)(Math.random() * 7); // Povprečna vozila med 5m in 12m
+        } else {
+            return 1 + (int)(Math.random() * 4); // Krajša vozila med 1m in 5m
+        }
     }
 }
 
 class Vozilo {
-    private static int zaporednaStevilka = 0;
-    private int dolzina;
-    private int id;
+    String registracija;
+    int zaporednaStevilka;
+    int dolzina; // v metrih
 
-    public Vozilo() {
-        this.dolzina = 5; // privzeta dolžina vozila
-        this.id = ++zaporednaStevilka;
-    }
-
-    public int getDolzina() {
-        return dolzina;
-    }
-
-    public int getId() {
-        return id;
+    public Vozilo(String registracija, int zaporednaStevilka, int dolzina) {
+        this.registracija = registracija;
+        this.zaporednaStevilka = zaporednaStevilka;
+        this.dolzina = dolzina;
     }
 }
