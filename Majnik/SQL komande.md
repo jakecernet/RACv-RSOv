@@ -30,7 +30,7 @@
     CREATE TABLE oddelek (
         oznaka_oddelka CHAR(3) PRIMARY KEY,
         razrednik VARCHAR(40) NOT NULL UNIQUE,
-        sola VARCHAR(60) NOT NULL,
+        sola VARCHAR(60) NOT NULL
     );
     ```
 
