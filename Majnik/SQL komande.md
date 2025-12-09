@@ -58,9 +58,12 @@
 
     ```sql
     CONSTRAINT oddelek_sola_fk FOREIGN KEY (sola) REFERENCES sola(naziv_sole)
+
+    ALTER TABLE razred ADD CONSTRAINT razred_razrednik_fk FOREIGN KEY (razrednik) REFERENCES ucitelj(emso);
     ```
 
 -   `ALTER TABLE ime_tabele DROP PRIMARY KEY;` - Odstranitev primarnega ključa iz tabele
+-   `ALTER TABLE ime_tabele ADD PRIMARY KEY (stolpec);` - Dodajanje primarnega ključa v tabelo
 -   `ALTER TABLE ime_tabele ADD COLUMN ime_stolpca TIP;` - Dodajanje novega stolpca v tabelo
 -   `ALTER TABLE ime_tabele MODIFY COLUMN ime_stolpca NOV_TIP;` - Spreminjanje tipa obstoječega stolpca
 
@@ -88,6 +91,8 @@
 
     ```sql
     GRANT SELECT ON vegas.tab1 TO bogdan@localhost;
+
+    GRANT SELECT, INSERT, UPDATE ON moja_baza.* TO ana@localhost;
     ```
 
 -   `REVOKE IMENA_PRAVIC ON ime_baze.* FROM uporabnisko_ime@localhost;` - Odvzem pravic uporabniku
@@ -106,6 +111,14 @@
 
     ```sql
     GRANT SELECT ON *.* TO ucitelj;
+    ```
+
+-   `GRANT izvirna_vloga TO druga_vloga;` - Dodeljevanje pravic obstoječe vloge drugi vlogi
+
+    Primer:
+
+    ```sql
+    GRANT ucitelj TO dijak;
     ```
 
 -   `SET ROLE ime_vloge;` - Aktiviranje vloge za trenutnega uporabnika
