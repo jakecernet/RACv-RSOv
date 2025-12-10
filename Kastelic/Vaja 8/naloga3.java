@@ -5,147 +5,202 @@ Ti vrednosti naj bosta privzeti za določitev hitrosti izvajanja obeh procesov, 
 Spišite program, ki se bo izvajal do trenutka, ko vhodni proces ne bo mogel več vriniti vozila v vrsto. Tedaj naj se izvajanje obeh niti zaključi.
 Izpis (poročilo) o izvajanju programa naj bo enako kot v nalogi 1, dodatno naj se izpiše še seznam vseh vozil v vrsti (tablica+zap.št.+dolžina)*/
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class naloga3 {
     public static void main(String[] args) {
-        double vhodHitrost = 1.0; // privzeta hitrost vhodnega procesa
-        double izhodHitrost = 2.0; // privzeta hitrost izhodnega procesa
+        final int dolzinaCeste = 1450;
+        Cesta cesta = new Cesta(dolzinaCeste);
 
-        // Preveri, če so podani argumenti za hitrosti
-        if (args.length >= 2) {
+        // Nastavitve hitrosti (v sekundah)
+        double intervalVhod = 1.0;
+        double intervalIzhod = 2.0;
+
+        // Preverjanje argumentov (opcijsko, če bi želeli spreminjati preko args)
+        if (args.length > 0) {
             try {
-                double vh = Double.parseDouble(args[0]);
-                double izh = Double.parseDouble(args[1]);
-                if (vh >= 0.1 && vh <= 4.5) {
-                    vhodHitrost = vh;
-                }
-                if (izh >= 0.1 && izh <= 4.5) {
-                    izhodHitrost = izh;
+                intervalVhod = Double.parseDouble(args[0]);
+                if (args.length > 1) {
+                    intervalIzhod = Double.parseDouble(args[1]);
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Neveljavni argumenti za hitrosti, uporabljene privzete vrednosti.");
+                System.out.println("Napaka pri branju argumentov, uporabljam privzete vrednosti.");
             }
         }
 
-        PrometniPas prometniPas = new PrometniPas(10); // nastavimo kapaciteto vrste na 10 vozil
+        // Omejitev intervalov na 0.1 do 4.5
+        intervalVhod = Math.max(0.1, Math.min(4.5, intervalVhod));
+        intervalIzhod = Math.max(0.1, Math.min(4.5, intervalIzhod));
 
-        VhodniProces vhodniProces = new VhodniProces(prometniPas, vhodHitrost);
-        IzhodniProces izhodniProces = new IzhodniProces(prometniPas, izhodHitrost);
+        VhodniProces vhod = new VhodniProces(cesta, intervalVhod);
+        IzhodniProces izhod = new IzhodniProces(cesta, intervalIzhod);
 
-        Thread vhodThread = new Thread(vhodniProces);
-        Thread izhodThread = new Thread(izhodniProces);
-
-        vhodThread.start();
-        izhodThread.start();
+        System.out.println("Začenjam simulacijo...");
+        cesta.startTimer();
+        vhod.start();
+        izhod.start();
 
         try {
-            vhodThread.join();
-            izhodThread.join();
+            vhod.join(); // Čakamo, da se vhodni proces ustavi (ko je cesta polna)
+            izhod.ustavi(); // Ustavimo še izhodni proces
+            izhod.interrupt(); // Prekinemo spanje če spi
+            izhod.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Izpis vozil v vrsti:");
-        prometniPas.izpisiVozila();
+
+        cesta.izpisPoročila();
+    }
+}
+
+class Cesta {
+    private Queue<Vozilo> vrsta = new LinkedList<>();
+    private int maxDolzina;
+    private int skupnaDolzinaVozil = 0;
+    private boolean polna = false;
+    private long startTime;
+    private long endTime;
+
+    public Cesta(int maxDolzina) {
+        this.maxDolzina = maxDolzina;
     }
 
-    private static class PrometniPas {
-        private final int kapaciteta;
-        private final java.util.Queue<Vozilo> vrsta;
-        private int zapStVozila = 0;
+    public void startTimer() {
+        this.startTime = System.currentTimeMillis();
+    }
 
-        public PrometniPas(int kapaciteta) {
-            this.kapaciteta = kapaciteta;
-            this.vrsta = new java.util.LinkedList<>();
-        }
+    public synchronized boolean dodaj(Vozilo v) {
+        if (polna) return false;
 
-        public synchronized boolean dodajVozilo() {
-            if (vrsta.size() < kapaciteta) {
-                zapStVozila++;
-                Vozilo vozilo = new Vozilo(zapStVozila, (int)(Math.random() * 5000 + 1000));
-                vrsta.add(vozilo);
-                System.out.println("Dodano vozilo: " + vozilo);
-                notifyAll();
-                return true;
-            }
+        // Logika iz naloge 1:
+        // if (skupnaDolzinaVozil + dolzinaVozila + (cesta.size() * 0.75) > dolzinaCeste)
+        if (skupnaDolzinaVozil + v.dolzina + (vrsta.size() * 0.75) > maxDolzina) {
+            polna = true;
+            endTime = System.currentTimeMillis();
             return false;
         }
 
-        public synchronized Vozilo odstraniVozilo() throws InterruptedException {
-            while (vrsta.isEmpty()) {
-                wait();
-            }
-            Vozilo vozilo = vrsta.poll();
-            System.out.println("Odstranjeno vozilo: " + vozilo);
-            return vozilo;
-        }
-
-        public void izpisiVozila() {
-            System.out.printf("%-10s %-10s%n", "Zap.št.", "Dolžina");
-            for (Vozilo v : vrsta) {
-                System.out.printf("%-10d %-10d%n", v.zapSt, v.dolzina);
-            }
-        }
+        vrsta.add(v);
+        skupnaDolzinaVozil += v.dolzina;
+        // System.out.println("Dodano vozilo: " + v.registracija + " (Dolžina: " + v.dolzina + ")");
+        return true;
     }
 
-    private static class Vozilo {
-        public final int zapSt;
-        public final int dolzina;
-
-        public Vozilo(int zapSt, int dolzina) {
-            this.zapSt = zapSt;
-            this.dolzina = dolzina;
+    public synchronized Vozilo vzemi() {
+        Vozilo v = vrsta.poll();
+        if (v != null) {
+            skupnaDolzinaVozil -= v.dolzina;
+            // System.out.println("Odstranjeno vozilo: " + v.registracija);
         }
-
-        @Override
-        public String toString() {
-            return "Vozilo{" + "zapSt=" + zapSt + ", dolzina=" + dolzina + '}';
-        }
+        return v;
     }
 
-    private static class VhodniProces implements Runnable {
-        private final PrometniPas prometniPas;
-        private final double hitrost;
+    public synchronized boolean jePolna() {
+        return polna;
+    }
 
-        public VhodniProces(PrometniPas prometniPas, double hitrost) {
-            this.prometniPas = prometniPas;
-            this.hitrost = hitrost;
+    public synchronized void izpisPoročila() {
+        long casPolnjenja = endTime - startTime;
+        
+        System.out.println("\n--- POROČILO ---");
+        System.out.println("Čas polnjenja ceste: " + casPolnjenja + " ms");
+        System.out.println("Število vozil na cesti: " + vrsta.size());
+        System.out.println("Skupna dolžina vozil: " + skupnaDolzinaVozil + " m");
+        System.out.println("Neizrabljen prostor na cesti: " + (maxDolzina - skupnaDolzinaVozil - (vrsta.size() * 0.75)) + " m");
+        
+        System.out.println("\n--- SEZNAM VOZIL V VRSTI ---");
+        System.out.println("Tablica\t\tZap.št.\tDolžina");
+        for (Vozilo v : vrsta) {
+            System.out.println(v.registracija + "\t\t" + v.zaporednaStevilka + "\t" + v.dolzina + "m");
         }
+    }
+}
 
-        @Override
-        public void run() {
+class VhodniProces extends Thread {
+    private Cesta cesta;
+    private double interval; // v sekundah
+    private int zaporednaStevilka = 1;
+
+    public VhodniProces(Cesta cesta, double interval) {
+        this.cesta = cesta;
+        this.interval = interval;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
             try {
-                while (true) {
-                    boolean dodano = prometniPas.dodajVozilo();
-                    if (!dodano) {
-                        System.out.println("Vrsta je polna, vhodni proces se ustavi.");
-                        break;
-                    }
-                    Thread.sleep((long)(1000 / hitrost));
-                }
+                Thread.sleep((long) (interval * 1000));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
+
+            int dolzina = generirajDolzinoVozila();
+            Vozilo v = new Vozilo("REG" + zaporednaStevilka, zaporednaStevilka, dolzina);
+            
+            if (!cesta.dodaj(v)) {
+                // Cesta je polna, končamo
+                break;
+            }
+            zaporednaStevilka++;
         }
     }
 
-    private static class IzhodniProces implements Runnable {
-        private final PrometniPas prometniPas;
-        private final double hitrost;
-
-        public IzhodniProces(PrometniPas prometniPas, double hitrost) {
-            this.prometniPas = prometniPas;
-            this.hitrost = hitrost;
+    private int generirajDolzinoVozila() {
+        // Logika iz naloge 1
+        double rand = Math.random();
+        if (rand < 0.998) {
+            return 5 + (int)(Math.random() * 7); // 5m - 11m (naloga 1 pravi 5-12, ampak koda je 5 + rand*7 kar je 5..11.99)
+        } else {
+            return 1 + (int)(Math.random() * 4); // 1m - 4m
         }
+    }
+}
 
-        @Override
-        public void run() {
+class IzhodniProces extends Thread {
+    private Cesta cesta;
+    private double interval; // v sekundah
+    private volatile boolean running = true;
+
+    public IzhodniProces(Cesta cesta, double interval) {
+        this.cesta = cesta;
+        this.interval = interval;
+    }
+
+    public void ustavi() {
+        running = false;
+    }
+
+    @Override
+    public void run() {
+        while (running) {
             try {
-                while (true) {
-                    prometniPas.odstraniVozilo();
-                    Thread.sleep((long)(2000 / hitrost));
-                }
+                Thread.sleep((long) (interval * 1000));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // Če smo prekinjeni in running je false, končamo
+                if (!running) break;
             }
+
+            if (!running) break;
+
+            // Če je cesta polna (vhodni proces se je ustavil), bi morali tudi mi nehati?
+            // Navodilo: "Tedaj naj se izvajanje obeh niti zaključi."
+            // To urejamo v main z ustavi() in interrupt().
+            
+            cesta.vzemi();
         }
+    }
+}
+
+class Vozilo {
+    String registracija;
+    int zaporednaStevilka;
+    int dolzina; // v metrih
+
+    public Vozilo(String registracija, int zaporednaStevilka, int dolzina) {
+        this.registracija = registracija;
+        this.zaporednaStevilka = zaporednaStevilka;
+        this.dolzina = dolzina;
     }
 }
