@@ -6,5 +6,5 @@ GRANT Blagajnik to Poslovodja;
 SET ROLE Blagajnik;
 
 SELECT * FROM mysql.roles_mapping;
-SHOW GRANTS FOR 'Blagajnik', 'Poslovodja';
+SHOW GRANTS FOR 'Poslovodja';
 ```
