@@ -16,10 +16,11 @@ public class naloga4 {
         Nit nit2 = new Nit();
 
         nit1.start();
+        nit2.start();
         try {
             nit1.join(); // Čakanje na konec izvajanja nit1
+            nit2.join();
         } catch (InterruptedException e) {
         }
-        nit2.start();
     }
 }
