@@ -172,6 +172,22 @@ public class BinarySearchTree {
         }
     }
 
+    /**
+     * Vrne višino drevesa
+     * 
+     * @param root Koren drevesa
+     * @return Višina drevesa
+     */
+    int height(Node root) {
+        if (root == null) {
+            return 0;
+        } else {
+            int leftHeight = height(root.left);
+            int rightHeight = height(root.right);
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+
     // Test
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree();
