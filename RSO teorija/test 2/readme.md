@@ -1,2 +1,2 @@
-b varianta 2. testa pri RSO teoriji
+2. test pri RSO teoriji
 =======================================
