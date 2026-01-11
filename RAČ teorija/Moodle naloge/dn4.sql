@@ -1,6 +1,4 @@
-(Že postavljeno)
-
-```sql
+-- (Že postavljeno)
 mysql -u root -p;
 
 CREATE DATABASE vlak;
@@ -31,54 +29,40 @@ CREATE TABLE Postanek_vlaka(
     Postaja varchar(60) NOT NULL,
     Voznja varchar(10) NOT NULL
 );
-```
 
-### 1. naloga
+-- 1. a)
 
-1. a)
-
-```sql
 ALTER TABLE Postanek_vlaka
 ADD CONSTRAINT fk_postaja FOREIGN KEY (Postaja) REFERENCES Postaja(Naziv_postaje);
 
 ALTER TABLE Postanek_vlaka
 ADD CONSTRAINT fk_voznja FOREIGN KEY (Voznja) REFERENCES Voznja_vlaka(Oznaka_voznje);
-```
 
-1. b)
+-- 1. b)
 
-```sql
 -- če poznate ime tuje omejitve (fk_postaja):
 ALTER TABLE Postanek_vlaka DROP FOREIGN KEY fk_postaja;
 
 -- če ne poznate imena, pridobite ga npr. tako:
 SHOW CREATE TABLE Postanek_vlaka;
-```
 
-1. c)
+-- 1. c)
 
-```sql
 ALTER TABLE Voznja_vlaka
 ADD COLUMN Sprevodnik integer NOT NULL;
-```
 
-### 2. naloga
 
-```sql
+-- 2. naloga
+
 CREATE ROLE sprevodnik;
 GRANT SELECT ON * TO sprevodnik;
 GRANT UPDATE ON Voznja_vlaka TO sprevodnik;
-```
 
-### 3. naloga
+-- 3. naloga
 
-```sql
 CREATE USER Zdravko@'%';
 GRANT sprevodnik TO Zdravko@'%';
-```
 
-### 4. naloga
+-- 4. naloga
 
-```sql
 SELECT * FROM mysql.roles_mapping;
-```

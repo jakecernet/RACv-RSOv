@@ -1,4 +1,3 @@
-```sql
 CREATE TABLE racun(
     izdelek integer AUTO_INCREMENT NOT NULL,
     st_racuna integer NOT NULL,
@@ -17,4 +16,3 @@ ADD CONSTRAINT chk_cena_izdelka CHECK (znesek <= 500);
 
 ALTER TABLE racun
 MODIFY COLUMN znesek decimal(5, 2);
-```

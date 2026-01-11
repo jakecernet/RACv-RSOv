@@ -1,1 +1,1 @@
-Razni markdown zapiski od teorije RAČ
+Razni zapiski + naloge od teorije RAČ
