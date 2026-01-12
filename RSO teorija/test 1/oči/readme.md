@@ -30,7 +30,7 @@ Spišite javanski podprogram, ki določi višino tega drevesa.
 Metoda izpisi100 objekta vrste Naloga04 pri zagonu izpiše naključnih 100 zaporednih naravnih števil, nato proži izjemo. Naključnih pomeni, da je prvo število zaporedja pseudo-naključno izbrano iz intervala [7,49]. Če je zadnje izpisano število tako, da je njegova zadnja števka manjša od 5, proži izjemo vrste Izjema04Navzdol, sicer Izjema04Navzgor. Izjema04Navzdol naj bo obravnavane vrste (managed), Izjema04Navzgor pa neobravnavane (unmanaged). Zagonska metoda razreda Naloga04 izvede metodo izpisi 100. Spišite:
 
 -   a) potrebne deklaracije/definicije (1t),
--   b) opisan program zz vsemi zahtevanimi metodami (1+1).
+-   b) opisan program z vsemi zahtevanimi metodami (1+1).
 
 ## 5. naloga
 
