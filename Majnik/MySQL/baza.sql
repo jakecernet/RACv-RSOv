@@ -49,6 +49,7 @@ CREATE TABLE `let` (
 
 LOCK TABLES `let` WRITE;
 /*!40000 ALTER TABLE `let` DISABLE KEYS */;
+INSERT INTO `let` VALUES ('LH456','Ryanair','D-AIAB','2024-07-02','2024-07-02 12:00:00','2024-07-02 14:30:00',456,123),('RA123','Adria Airways','S5-AAA','2024-07-01','2024-07-01 08:00:00','2024-07-01 10:00:00',123,456);
 /*!40000 ALTER TABLE `let` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,10 +64,12 @@ CREATE TABLE `letalisce` (
   `LetalisceID` int(10) NOT NULL AUTO_INCREMENT,
   `Ime` varchar(30) NOT NULL,
   `drzava` varchar(56) NOT NULL,
-  `longtitude` double NOT NULL,
-  `latitude` double NOT NULL,
-  PRIMARY KEY (`LetalisceID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `longtitude` decimal(10,6) NOT NULL,
+  `latitude` decimal(10,6) NOT NULL,
+  PRIMARY KEY (`LetalisceID`),
+  CONSTRAINT `long_mask` CHECK (`longtitude` between -180 and 180),
+  CONSTRAINT `lat_mask` CHECK (`latitude` between -90 and 90)
+) ENGINE=InnoDB AUTO_INCREMENT=790 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,6 +78,7 @@ CREATE TABLE `letalisce` (
 
 LOCK TABLES `letalisce` WRITE;
 /*!40000 ALTER TABLE `letalisce` DISABLE KEYS */;
+INSERT INTO `letalisce` VALUES (123,'Letališče Jožeta Pučnika Ljubl','Slovenija',14.457600,46.223000),(456,'Frankfurt Airport','Nemčija',8.570600,50.037900),(789,'Letališče Edvarda Rusjana Mari','Slovenija',15.645000,46.485000);
 /*!40000 ALTER TABLE `letalisce` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,6 +110,7 @@ CREATE TABLE `letalo` (
 
 LOCK TABLES `letalo` WRITE;
 /*!40000 ALTER TABLE `letalo` DISABLE KEYS */;
+INSERT INTO `letalo` VALUES ('D-ABCD','Mig-25','Mikoyan-Gurevich','1985-11-05',1,10000,'Vojaško','Ryanair'),('D-AIAB','Boeing 737','Boeing','2018-09-20',160,18000,'Potniško','Adria Airways'),('S5-AAA','Airbus A320','Airbus','2015-06-15',180,20000,'Potniško','Adria Airways'),('S5-BBB','Pilatus PC-12','Pilatus Aircraft','2020-03-10',9,2000,'Poslovno','Adria Airways');
 /*!40000 ALTER TABLE `letalo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,6 +136,7 @@ CREATE TABLE `letalska_druzba` (
 
 LOCK TABLES `letalska_druzba` WRITE;
 /*!40000 ALTER TABLE `letalska_druzba` DISABLE KEYS */;
+INSERT INTO `letalska_druzba` VALUES ('Adria Airways','Letališka cesta 30, Ljubljana','Jože Potrebuješ','www.adriaairways.si'),('Ryanair','Irska','Michael OLeary','www.ryanair.com');
 /*!40000 ALTER TABLE `letalska_druzba` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +153,8 @@ CREATE TABLE `posadka` (
   PRIMARY KEY (`letIDLeta`,`UsluzbencEMSO`),
   KEY `fk_usluzbenc_posadka` (`UsluzbencEMSO`),
   CONSTRAINT `fk_let_posadka` FOREIGN KEY (`letIDLeta`) REFERENCES `let` (`IDLeta`),
-  CONSTRAINT `fk_usluzbenc_posadka` FOREIGN KEY (`UsluzbencEMSO`) REFERENCES `usluzbenc` (`EMSO`)
+  CONSTRAINT `fk_usluzbenc_posadka` FOREIGN KEY (`UsluzbencEMSO`) REFERENCES `usluzbenc` (`EMSO`),
+  CONSTRAINT `emso_mask_posadka` CHECK (`UsluzbencEMSO` regexp '^[0-9]{7}50[0-9]{4}$')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,6 +164,7 @@ CREATE TABLE `posadka` (
 
 LOCK TABLES `posadka` WRITE;
 /*!40000 ALTER TABLE `posadka` DISABLE KEYS */;
+INSERT INTO `posadka` VALUES ('LH456',3456787503456),('RA123',1234567501234),('RA123',2345677502345);
 /*!40000 ALTER TABLE `posadka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +181,7 @@ CREATE TABLE `potnik` (
   `Priimek` varchar(30) NOT NULL,
   `Datum_rojstva` date NOT NULL,
   PRIMARY KEY (`potnikID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,6 +190,7 @@ CREATE TABLE `potnik` (
 
 LOCK TABLES `potnik` WRITE;
 /*!40000 ALTER TABLE `potnik` DISABLE KEYS */;
+INSERT INTO `potnik` VALUES (1,'Štefan','Hadalin','1990-05-15'),(2,'Mici','Brinar','1985-08-22'),(3,'Ivan','Cankar','1978-11-30'),(4,'Damjan','Murko','1995-02-10');
 /*!40000 ALTER TABLE `potnik` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,11 +206,13 @@ CREATE TABLE `rezervacija` (
   `IDLeta` varchar(20) NOT NULL,
   `Sedez` char(4) NOT NULL,
   `Datum_rezervacije` date NOT NULL,
-  `Meni` varchar(10) NOT NULL,
+  `Meni` varchar(20) NOT NULL,
   PRIMARY KEY (`potnikID`,`IDLeta`),
   KEY `IDLeta` (`IDLeta`),
   CONSTRAINT `rezervacija_ibfk_1` FOREIGN KEY (`potnikID`) REFERENCES `potnik` (`potnikID`),
-  CONSTRAINT `rezervacija_ibfk_2` FOREIGN KEY (`IDLeta`) REFERENCES `let` (`IDLeta`)
+  CONSTRAINT `rezervacija_ibfk_2` FOREIGN KEY (`IDLeta`) REFERENCES `let` (`IDLeta`),
+  CONSTRAINT `sedez_mask` CHECK (`Sedez` regexp '^[0-9]+[A-Z]$'),
+  CONSTRAINT `meni_mask` CHECK (`Meni` in ('Vegetarijanski','Mesni','Veganski','Otroški'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -211,6 +222,7 @@ CREATE TABLE `rezervacija` (
 
 LOCK TABLES `rezervacija` WRITE;
 /*!40000 ALTER TABLE `rezervacija` DISABLE KEYS */;
+INSERT INTO `rezervacija` VALUES (1,'RA123','12A','2024-06-01','Mesni'),(2,'RA123','14B','2024-06-02','Vegetarijanski'),(3,'LH456','10C','2024-06-03','Veganski'),(4,'LH456','11D','2024-06-04','Otroški');
 /*!40000 ALTER TABLE `rezervacija` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,7 +242,7 @@ CREATE TABLE `tovorni_nalog` (
   PRIMARY KEY (`IDNaloga`),
   KEY `IDLeta` (`IDLeta`),
   CONSTRAINT `tovorni_nalog_ibfk_1` FOREIGN KEY (`IDLeta`) REFERENCES `let` (`IDLeta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,6 +251,7 @@ CREATE TABLE `tovorni_nalog` (
 
 LOCK TABLES `tovorni_nalog` WRITE;
 /*!40000 ALTER TABLE `tovorni_nalog` DISABLE KEYS */;
+INSERT INTO `tovorni_nalog` VALUES (1,'RA123',500,'Elektronika','TechCorp'),(2,'LH456',300,'Oblačila','FashionInc');
 /*!40000 ALTER TABLE `tovorni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,7 +272,8 @@ CREATE TABLE `usluzbenc` (
   PRIMARY KEY (`EMSO`),
   UNIQUE KEY `email` (`email`),
   KEY `fk_letalska_druzba_usluzbenec` (`Letalska_druzba`),
-  CONSTRAINT `fk_letalska_druzba_usluzbenec` FOREIGN KEY (`Letalska_druzba`) REFERENCES `letalska_druzba` (`Ime`)
+  CONSTRAINT `fk_letalska_druzba_usluzbenec` FOREIGN KEY (`Letalska_druzba`) REFERENCES `letalska_druzba` (`Ime`),
+  CONSTRAINT `emso_mask` CHECK (`EMSO` regexp '^[0-9]{7}50[0-9]{4}$')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,6 +283,7 @@ CREATE TABLE `usluzbenc` (
 
 LOCK TABLES `usluzbenc` WRITE;
 /*!40000 ALTER TABLE `usluzbenc` DISABLE KEYS */;
+INSERT INTO `usluzbenc` VALUES (1234567501234,'Adria Airways','Jože','Štefan','joze.stefan@gmail.com','Pilot'),(2345677502345,'Ryanair','Štefka','Rupnik','stefka.rupnik@ryanair.com','Stevardesa'),(3456787503456,'Ryanair','Barak','Obama','barak.obama@gov.com','Mehanik');
 /*!40000 ALTER TABLE `usluzbenc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,7 +300,8 @@ CREATE TABLE `usluzbenc_vzdrzevanje` (
   PRIMARY KEY (`UsluzbencEMSO`,`VzdrzevanjeIDVzdrzevanja`),
   KEY `fk_usluzbenc_vzdrzevanje_vzdrzevanje` (`VzdrzevanjeIDVzdrzevanja`),
   CONSTRAINT `fk_usluzbenc_vzdrzevanje_usluzbenc` FOREIGN KEY (`UsluzbencEMSO`) REFERENCES `usluzbenc` (`EMSO`),
-  CONSTRAINT `fk_usluzbenc_vzdrzevanje_vzdrzevanje` FOREIGN KEY (`VzdrzevanjeIDVzdrzevanja`) REFERENCES `vzdrzevanje` (`IDVzdrzevanja`)
+  CONSTRAINT `fk_usluzbenc_vzdrzevanje_vzdrzevanje` FOREIGN KEY (`VzdrzevanjeIDVzdrzevanja`) REFERENCES `vzdrzevanje` (`IDVzdrzevanja`),
+  CONSTRAINT `emso_mask_vzdrzevanje` CHECK (`UsluzbencEMSO` regexp '^[0-9]{7}50[0-9]{4}$')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -295,6 +311,7 @@ CREATE TABLE `usluzbenc_vzdrzevanje` (
 
 LOCK TABLES `usluzbenc_vzdrzevanje` WRITE;
 /*!40000 ALTER TABLE `usluzbenc_vzdrzevanje` DISABLE KEYS */;
+INSERT INTO `usluzbenc_vzdrzevanje` VALUES (2345677502345,2),(3456787503456,1);
 /*!40000 ALTER TABLE `usluzbenc_vzdrzevanje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,7 +331,7 @@ CREATE TABLE `vzdrzevanje` (
   PRIMARY KEY (`IDVzdrzevanja`),
   KEY `fk_letalo_vzdrzevanje` (`LetaloRegistracija`),
   CONSTRAINT `fk_letalo_vzdrzevanje` FOREIGN KEY (`LetaloRegistracija`) REFERENCES `letalo` (`Registracija`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,6 +340,7 @@ CREATE TABLE `vzdrzevanje` (
 
 LOCK TABLES `vzdrzevanje` WRITE;
 /*!40000 ALTER TABLE `vzdrzevanje` DISABLE KEYS */;
+INSERT INTO `vzdrzevanje` VALUES (1,'S5-AAA','2024-05-15','Redni servis motorjev','Redno'),(2,'D-AIAB','2024-06-10','Popravilo pristajalne naprave','Izredno');
 /*!40000 ALTER TABLE `vzdrzevanje` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -335,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-07 15:09:15
+-- Dump completed on 2026-01-13  8:29:46
