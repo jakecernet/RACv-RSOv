@@ -3,6 +3,7 @@
 Uporabite razprševanje v HashMap (element naj bo ["beseda",števec], pri čemer naj bo beseda ključ). 
 Statistka besed naj se po končanem postopku izpiše na zaslon. */
 import java.util.*;
+import java.util.HashMap;
 import java.io.*;
 
 public class naloga2 {

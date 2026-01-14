@@ -2,6 +2,7 @@
 /* Spišite javanski program, ki rezultat naloge 3 zapiše v vrsto (npr. LinkedList) tako, da je vsaka poved
 predstavljena kot element-string v tej vrsti. Program ob vsakem zagonu naključno izbere 3 povedi iz strukture in jih izpiše na zaslon. */
 import java.util.*;
+import java.util.LinkedList;
 import java.io.*;
 
 public class naloga6 {
