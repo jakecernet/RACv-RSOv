@@ -23,7 +23,7 @@ public class naloga4 {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Vnesite ime datoteke (brez pripone .html): ");
         String imeDatoteke = scanner.nextLine();
-        zapisiHtml( imeDatoteke, htmlTabela);
+        zapisiHtml(imeDatoteke, htmlTabela);
         scanner.close();
     }
 
@@ -35,7 +35,7 @@ public class naloga4 {
             out.println("</head><body>");
             out.println(vsebina);
             out.println("</body></html>");
-            System.out.println("HTML tabela je bila zapisana v datoteko: "+ imeDatoteke+ ".html");
+            System.out.println("HTML tabela je bila zapisana v datoteko: " + imeDatoteke + ".html");
         } catch (java.io.IOException e) {
             System.out.println("Napaka pri pisanju v datoteko: " + e.getMessage());
         }
