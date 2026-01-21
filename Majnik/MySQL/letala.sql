@@ -247,5 +247,3 @@ GRANT SELECT, UPDATE ON letala.Letalo TO mehanik;
 GRANT SELECT, INSERT, UPDATE ON letala.let TO pilot;
 GRANT SELECT, INSERT, UPDATE ON letala.Rezervacija TO stevardesa;
 GRANT SELECT, INSERT, UPDATE ON letala.Vzdrzevanje TO mehanik;
-
-USE admin;
