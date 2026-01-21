@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rezultati>
+  <igralec>
+    <uporabnik>marija</uporabnik>
+    <rezultat>15</rezultat>
+    <datum_cas>2026-01-21 08:16:20.487448900</datum_cas>
+    <st_igranj>4</st_igranj>
+  </igralec>
+  <igralec>
+    <uporabnik>joze</uporabnik>
+    <rezultat>0</rezultat>
+    <datum_cas></datum_cas>
+    <st_igranj>0</st_igranj>
+  </igralec>
+</rezultati>
