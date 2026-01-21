@@ -226,3 +226,26 @@ INSERT INTO Rezervacija (potnikID, IDLeta, Sedez, Datum_rezervacije, Meni) VALUE
 INSERT INTO Tovorni_Nalog (IDLeta, Masa, Opis, Narocnik) VALUES
 ('RA123', 500, 'Elektronika', 'TechCorp'),
 ('LH456', 300, 'Oblačila', 'FashionInc');
+
+
+-- =====================================================
+--  Vloge
+-- =====================================================
+DROP ROLE IF EXISTS admin;
+DROP ROLE IF EXISTS mehanik;
+DROP ROLE IF EXISTS pilot;
+DROP ROLE IF EXISTS stevardesa;
+
+CREATE ROLE admin;
+CREATE ROLE mehanik;
+CREATE ROLE pilot;
+CREATE ROLE stevardesa;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON letala.* TO admin;
+GRANT SELECT ON letala.* TO stevardesa;
+GRANT SELECT, UPDATE ON letala.Letalo TO mehanik;
+GRANT SELECT, INSERT, UPDATE ON letala.let TO pilot;
+GRANT SELECT, INSERT, UPDATE ON letala.Rezervacija TO stevardesa;
+GRANT SELECT, INSERT, UPDATE ON letala.Vzdrzevanje TO mehanik;
+
+USE admin;
