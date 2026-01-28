@@ -1,0 +1,39 @@
+LAV RSOv     vaja 6_13
+
+- datoteke z naključnim dostopom
+- datoteke objektov
+
+Prizorišče je opredeljeno z imenom, lokacijo 
+(država, mesto, ulica, hišna številka, poštna številka),
+število mest za obiskovalce.
+Stojišč ni, sedeži so oštevilčeni, vstopnica za specifičen sedeži
+je vedno imenska. Obiskovalec se identificira z imenom, priimkom in
+lokacijo (glej prej besedilo).
+Prizorišče gosti dogodke terminsko; pri tem je dogodek določen s
+temo (naziv dogodka) datumom in uro dogodka, ter trajanjem
+dogodka.
+
+1. Tipizirajte lokacijo (opredelitev v besedilu):
+   generirajte vsaj 100 lokacij in jih urejene po poštnih
+   številkah zapišite na datoteko. Uporabite datoteko z naključnim 
+   dostopom.
+   
+2. Izvedite sistem 'iskanja' po datoteki; metoda iskalnega objekta
+   ki bo uporabljal datoteko, naj v skladu s podano poštno številko
+   vrne ime kraja.   
+
+-----
+
+3. Uporabite Java, modelirajte opisano strukturo. Upoštevajte, da je
+   v besedilu opisanih entitet več, ter da so relacije med njimi 
+   dobro definirane (besedilo).
+   Generirajte kakšnega izmed dogodkov.
+
+4. Izvedite sistem za shranjevanje in restavriranje opisane strukture.
+   Organizacija datoteke/zbirke naj bo objektna - uporabite 
+   ObjektInput/Output stream.
+-----
+5. Alternativa naloga 3. in 4. (redukcija težavnosti)
+   Realizirajte nalogo 2, pri tem naj bo datoteka pač datoteka objektov
+
+--14 dni
