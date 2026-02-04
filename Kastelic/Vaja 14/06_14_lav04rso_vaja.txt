@@ -1,0 +1,37 @@
+LAV04 -rsov
+06-14-
+
+1. naloga
+v okviru tečaja 2025-26 Rač.sistemi .. je med dodatnimi viri repozitorija dokumentov specifikacija podatkovne zbirke
+bookcollections. Prevzemite jo, nato ponastavite njeno vsebino, da jo bo možno uporabiti v lokalnem MariaDB SUPB-ju.
+Vse potrebne ukaze na SUPB ter spisek podatkovnih zbirk in vsebino vseh tabel podatkovne zbirke bookcollection podajte
+kot del poročila.
+
+2. naloga
+pripravite povpraševanja (sql stavke) za:
+- vrne število zapisov tabele book
+- vrne število knjig iz tabele book, ki jih je napisal Boris Pahor
+- vrne vse naslove knjih (title) avtorja Lainšček
+- vrne informacije o knjigah, ki so cenejše od 30 evrov
+- ugotovi, ali imamo knjigo avtorice Natalije Pavlič.
+
+v primeru, da za ustrezen test v sql spisane procedure potrebujete ustrezno vsebino zbirke, jo zagotovite pred
+pričetkom izvajanja. Dokaz pravilnosti spisanega povpraševanja naj vsebuje tudi njegov odgovor.
+
+3. naloga
+razširite vsebino tabele z dodatnim 50 naslovi del slovenskih avtorjev, predpostavite, da je zaloga vsakega novo 
+vstavljenega dela 100, ter da je cena posameznega dela 9.99 evra. V poročilo dodajte spisek stavkov, s katerimi dela
+dodate.
+
+4. Naloga
+Struktura podatkovne baze, kot je podana, je neugodna za uporabnika. Ugotovil je:
+- če je avtor avtor več kot ene knjige, se njegovo ime v tabeli pojavi večkrat,
+- mehanizem ne omogoča zapisa nabavne cene knjige, pri čemer naj bi se upoštevalo, da je ista knjiga lahko
+  nabavljena večkrat po različnih cenah, in s tem bi lahko imela tudi različne prodajne cene
+  
+restrukturirajte podatkovno zbirko v skladu z opisanimi željami in prepišite vsebino v novo zbirko.
+Postopek restrukturiranja in prepisovanja opišite (sekvenca sql stavkov)
+
+5. Naloga
+  Arhivirajte končno vsebino podatkovne zbirke, ukaz za izvedbo in arhiv naj bosta del poročila, slednji kot 
+  priloga v lastni datoteki.
