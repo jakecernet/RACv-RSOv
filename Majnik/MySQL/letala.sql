@@ -194,7 +194,7 @@ INSERT INTO let (IDLeta, Letalska_druzba, LetaloRegistracija, Datum, Cas_odhoda,
 
 -- Vzdrževanje
 INSERT INTO Vzdrzevanje (IDVzdrzevanja, LetaloRegistracija, Datum, Opis, Vrsta) VALUES
-(1, 'S5-AAA', '2024-05-15', 'Redni servis moto rjev', 'Redno'),
+(1, 'S5-AAA', '2024-05-15', 'Redni servis motorjev', 'Redno'),
 (2, 'D-AIAB', '2024-06-10', 'Popravilo pristajalne naprave', 'Izredno');
 
 -- Uslužbenec_Vzdrževanje
