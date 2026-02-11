@@ -247,3 +247,16 @@ GRANT SELECT, UPDATE ON letala.Letalo TO mehanik;
 GRANT SELECT, INSERT, UPDATE ON letala.let TO pilot;
 GRANT SELECT, INSERT, UPDATE ON letala.Rezervacija TO stevardesa;
 GRANT SELECT, INSERT, UPDATE ON letala.Vzdrzevanje TO mehanik;
+
+
+SELECT * FROM Letalska_druzba;
+SELECT * FROM letalisce;
+SELECT * FROM Usluzbenc;
+SELECT * FROM Letalo;
+SELECT * FROM Vzdrzevanje;
+SELECT * FROM Usluzbenc_Vzdrzevanje;
+SELECT * FROM let;
+SELECT * FROM Posadka;
+SELECT * FROM Potnik;
+SELECT * FROM Rezervacija;
+SELECT * FROM Tovorni_Nalog;
