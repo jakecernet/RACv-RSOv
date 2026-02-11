@@ -1,0 +1,155 @@
+LAV04 -rsov
+06-15-
+
+java/sql
+javafx/vizualizacija vsebine
+
+1. naloga
+v okviru tečaja 2025-26 Rač.sistemi .. je med dodatnimi viri repozitorija dokumentov specifikacija podatkovne zbirke
+glasovanja. Prevzemite jo, nato ponastavite njeno vsebino, da jo bo možno uporabiti.
+Dani sta dve varianti zbirke, opredelitev odločitve izbire tehnologije navedite v poročilu.
+
+2. naloga
+FX aplikacija okno vizualizacije vertikalno razdeli v dva dela:
+zgornji del je namenjen vnosu, spodnji vizualizaciji.
+Vnos : zastavjanje povpraševanj nad vsebino podatkovne zbirke glasovanja, predlagam
+gumb za uveljavitev/izvedbo povpraševanja
+vizualizacija: posiven prikaz rezultata povpraševanja
+
+3. naloga
+Spišite novo FX aplikacijo za delo s podatkovno zbirko glasovanja:
+s komponento TableView oz. TreeTableView vizualizirajte tabelo
+poll iz zbirke. Pri tem pazie, da so bodo vrednosti datum
+skih elementov predstavljeni v
+bralni obliki (očajna predstaviev datuma in časa). 
+Pomagati si lahko s spodnjo realizacijo
+
+4. Naloga
+Izdelati bi želeli del javanske aplikacije, ki bi omogočajo
+izbiro (aktiviranje) izbranega vprašanja (pola) iz nabora vseh.
+Uporabnik pri tem na spisku polov izbere tistega, ki ga želi
+narediti aktivnega.
+Vendar:
+*sočasno je aktiven zgolj en sam pol/vprašanje; torej je ob
+aktivaciji enega potrebno zapreti vse moreviti aktivne ostale.
+*pol je aktiven, če je čas njegovega kreiranja v preteklosti in 
+čas zapiranja v prihodnosti (recimo 10 dni naprej); pri aktivaciji čas
+kreiranja nastavimo na ta trenutek
+*pol deaktiviramo tako, da njegov čas zapiranja nastavimo na
+ trenuten čas/datum.
+ 
+ 
+------------
+delno realiziran model (iz tabele poll):
+
+/** class poll*/
+class Poll {
+
+   private Long id;
+   private String vprasanje;
+
+   public Poll(Long id, String vprasanje) {
+       this.id = id;
+       this.vprasanje = vprasanje;
+ 
+   }
+
+   public Long getId() {
+       return id;
+   }
+
+   public void setId(Long id) {
+       this.id = id;
+   }
+
+   public String getVprasanje() {
+       return vprasanje;
+   }
+
+   public void setVprasanje(String vprasanje) {
+       this.vprasanje = vprasanje;
+   }
+
+}
+
+/**
+  vizualizacija modela
+*/
+ import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+ 
+public class TableViewDemo2 extends Application {
+
+  @Override
+  public void start(Stage stage) {
+
+      TableView<Poll> table = new TableView<Poll>();
+
+      TableColumn<Poll, String> id_vpr = new TableColumn<Poll, String>("ID vprasanje");
+      TableColumn<Poll, String> vprasanje = new TableColumn<Poll, String>("Vprašanje");
+
+      TableColumn<Poll, String> casi = new TableColumn<Poll, String>("Časi");
+      // Create 2 sub column for FullName.
+      TableColumn<Poll, String> opened = new TableColumn<Poll, String>("openedAt");
+      TableColumn<Poll, String> closed = new TableColumn<Poll, String>("closedAt");
+
+      // Add sub columns to the Časi
+      casi.getColumns().addAll(opened, closed);
+
+
+
+      // Defines how to fill data for each cell.
+      // Get value from property of UserAccount. .
+      id_vpr.setCellValueFactory(new PropertyValueFactory<>("id"));
+      vprasanje.setCellValueFactory(new PropertyValueFactory<>("vprasanje"));
+      opened.setCellValueFactory(new PropertyValueFactory<>("openedAt"));       //ga ni v modelu
+      closed.setCellValueFactory(new PropertyValueFactory<>("closedAt"));       // ga ni v modelu
+      
+   
+      // Set Sort type for userName column
+      id_vpr.setSortType(TableColumn.SortType.DESCENDING);
+      vprasanje.setSortable(false);
+
+      // Display row data
+      ObservableList<Poll> list = getUserList();
+      table.setItems(list);
+
+      // dodamo stolpce v tabelo
+      table.getColumns().addAll(id_vpr, vprasanje, casi);
+
+      StackPane root = new StackPane();
+      root.setPadding(new Insets(5));
+      root.getChildren().add(table);
+
+      stage.setTitle("TableView");
+
+      Scene scene = new Scene(root, 450, 300);
+      stage.setScene(scene);
+      stage.show();
+  }
+
+  private ObservableList<Poll> getUserList() {
+
+      var p1 = new Poll(1L, "Je sosedova krava suha?");
+      var p2 = new Poll(2L, "Kakšno grmovje je bodičasto grmovje?");
+      var p3 = new Poll(3L, "Izberi najljubšo barvo");
+
+      ObservableList<Poll> list = FXCollections.observableArrayList(p1, p2, p3);
+      
+      list.add( new Poll(6L,"Kje so vse tiste stezice ?") );
+      
+      return list;
+  }
+
+  public static void main(String[] args) {
+      launch(args);
+  }
+}
