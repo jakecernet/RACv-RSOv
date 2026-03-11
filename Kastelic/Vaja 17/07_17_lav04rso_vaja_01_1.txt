@@ -1,0 +1,62 @@
+besede(id:N(PK), geslo:A(30), st_uporab:N, zadnja_uporaba:D, uspesni_poskusi:N, ocenjena_zahtevnost:N)
+
+CREATE TABLE besede ( id INT PRIMARY KEY, 
+                      geslo VARCHAR(30) NOT NULL, 
+			st_uporab INT NOT NULL, 
+			zadnja_uporaba TIMESTAMP, 
+			uspesni_poskusi INT NOT NULL, 
+			ocenjena_zahtevnost INT NOT NULL )
+					  
+SELECT id,geslo FROM besede WHERE LENGTH(geslo) = 20;
+SELECT id,geslo FROM besede WHERE LENGTH(geslo) = 20 ORDER BY zadnja_uporaba ASC LIMIT 1;
+SELECT id,geslo FROM besede WHERE LENGTH(geslo) = 20 ORDER BY st_uporab ASC LIMIT 1;
+SELECT id,geslo FROM besede WHERE LENGTH(geslo) = 20 ORDER BY ocenjena_zahtevnost ASC LIMIT 1;
+
+UPDATE besede 
+   SET zadnja_uporaba = CURRENT_DATE, 
+       st_uporab = st_uporab + 1, uspesni_poskusi = uspesni_poskusi + 1 
+  WHERE id = 3;
+  
+SELECT id, geslo, st_uporab, uspesni_poskusi, (uspesni_poskusi * 1.0 / st_uporab) AS procent_uspesnosti 
+    FROM besede WHERE st_uporab > 0 
+  ORDER BY procent_uspesnosti ASC;
+  
+fixture:
+INSERT INTO besede (id, geslo, st_uporab, zadnja_uporaba, uspesni_poskusi, ocenjena_zahtevnost) 
+   VALUES (1, 'modro jutranje nebo', 5, 1736630400, 3, 2), -- 2025-01-12 
+          (2, 'tiha zelena pot', 12, 1738531200, 9, 3), -- 2025-02-03 
+		(3, 'stara lesena hiša', 0, NULL, 0, 1), -- ni datuma 
+		  (4, 'miren gozdni oddih', 20, 1734825600, 14, 4), -- 2024-12-22 
+		  (5, 'sveža gorska voda', 3, 1739145600, 1, 2), -- 2025-02-10 
+		  (6, 'sončni travniški dan', 18, 1738022400, 12, 5), -- 2025-01-28 
+		  (7, 'tiho šumeče listje', 7, 1732924800, 4, 1), -- 2024-11-30 
+		  (8, 'mehka zimska odeja', 9, 1736035200, 6, 3), -- 2025-01-05 
+		  (9, 'topel domači kruh', 14, 1729200000, 9, 4), -- 2024-10-18 
+		  (10, 'mirno večerno jezero', 2, 1735084800, 1, 1); -- 2024-12-25  
+		  
+		  
+String sql = "SELECT id, geslo FROM besede WHERE LENGTH(geslo) = ?"; 
+
+try (PreparedStatement ps = conn.prepareStatement(sql)) { 
+   ps.setInt(1, dolzina); 
+   ResultSet rs = ps.executeQuery(); 
+   while (rs.next()) { 
+       int id = rs.getInt("id"); 
+	   String geslo = rs.getString("geslo"); 
+	   System.out.println(id + " | " + geslo); 
+   } 
+}
+
+String sql = """ 
+   UPDATE besede SET zadnja_uporaba = ?, 
+                     st_uporab = st_uporab + 1, 
+		uspesni_poskusi = uspesni_poskusi + 1 
+					WHERE id = ? 
+   """; 
+   try (PreparedStatement ps = conn.prepareStatement(sql)) { 
+        long now = System.currentTimeMillis() / 1000; // UNIX timestamp 
+		ps.setLong(1, now); 
+		ps.setInt(2, id); 
+		ps.executeUpdate(); 
+   }
+   
