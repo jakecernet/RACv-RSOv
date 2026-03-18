@@ -1,0 +1,163 @@
+BlueJ run started: Wed Mar 11 08:58:02 CET 2026
+BlueJ version 5.4.1
+Build ID: 76ffe5af
+Java version 23
+JavaFX version 20.0.1+2
+Virtual machine: Java HotSpot(TM) 64-Bit Server VM 23+37-2369 (Oracle Corporation)
+Running on: Windows 11 10.0 (amd64)
+Java Home: C:\Program Files\BlueJ\jdk
+----
+Detected language "english" based on iso639-2 code "slv"
+Opening project: C:\Users\Vegova\Desktop\http_strezniki
+Internal error: Update stats failed: java.net.ConnectException: Connection refused: connect
+1773215885137: Listening for JDWP connection on address: 127.0.0.1:54866
+Connected to debug VM via dt_socket transport...
+Communication with debug VM fully established.
+java.io.FileNotFoundException while reading import cache: userhome\bluej\import-cache.xml (The system cannot find the file specified)
+Post on Class menu
+An unexpected exception occurred:
+java.lang.IncompatibleClassChangeError: javafx.scene.AccessibleAttribute and javafx.scene.AccessibleAttribute$ToggleState disagree on InnerClasses attribute
+	at java.base/java.lang.Class.getDeclaringClass0(Native Method)
+	at java.base/java.lang.Class.isTopLevelClass(Class.java:2030)
+	at java.base/java.lang.Class.getSimpleBinaryName(Class.java:2015)
+	at java.base/java.lang.Class.getSimpleName0(Class.java:1877)
+	at java.base/java.lang.Class.getSimpleName(Class.java:1868)
+	at bluej.parser.ImportedTypeCompletion.<init>(ImportedTypeCompletion.java:52)
+	at bluej.utility.ImportScanner$PackageInfo.lambda$getType$0(ImportScanner.java:142)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:456)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:455)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+1773215919018: Listening for JDWP connection on address: 127.0.0.1:54879
+Connected to debug VM via dt_socket transport...
+Communication with debug VM fully established.
+Post on Class menu
+Post on Class menu
+bluej.extensions2.ClassNotFoundException: Class uporabi.HttpsStreznik Not Found
+	at bluej.extensions2.Identifier.getJavaClass(Identifier.java:177)
+	at bluej.extensions2.BClass.getJavaClass(BClass.java:189)
+	at klassenkarte.view.MenueEintrag.notifyPostClassMenu(MenueEintrag.java:80)
+	at bluej.extmgr.ClassExtensionMenu.postMenuItem(ClassExtensionMenu.java:65)
+	at bluej.extmgr.ExtensionMenuSingle.postMenuItems(ExtensionMenuSingle.java:70)
+	at bluej.extensions2.BlueJ.postMenuItem(BlueJ.java:879)
+	at bluej.extensions2.ExtensionBridge.postMenuItems(ExtensionBridge.java:100)
+	at bluej.extmgr.ExtensionWrapper.safePostMenuItems(ExtensionWrapper.java:680)
+	at bluej.extmgr.ExtensionsMenuManager.lambda$menuWillBecomeVisible$1(ExtensionsMenuManager.java:179)
+	at java.base/java.util.IdentityHashMap.forEach(IdentityHashMap.java:1376)
+	at bluej.extmgr.ExtensionsMenuManager.menuWillBecomeVisible(ExtensionsMenuManager.java:176)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.stage.Window.fireEvent(Window.java:1433)
+	at javafx.stage.Window$12.invalidated(Window.java:1111)
+	at javafx.beans.property.BooleanPropertyBase.markInvalid(BooleanPropertyBase.java:110)
+	at javafx.beans.property.BooleanPropertyBase.set(BooleanPropertyBase.java:145)
+	at javafx.stage.Window.setShowing(Window.java:1239)
+	at javafx.stage.Window.show(Window.java:1254)
+	at javafx.stage.PopupWindow.showImpl(PopupWindow.java:478)
+	at javafx.stage.PopupWindow.show(PopupWindow.java:423)
+	at javafx.scene.control.ContextMenu.doShow(ContextMenu.java:318)
+	at javafx.scene.control.ContextMenu.show(ContextMenu.java:278)
+	at bluej.pkgmgr.target.Target.lambda$new$9(Target.java:392)
+	at bluej.utility.javafx.JavaFXUtil.lambda$listenForContextMenu$11(JavaFXUtil.java:881)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3980)
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2704)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Post on Class menu
+Post on Class menu
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line -2: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 219: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified) (in java.io.FileInputStream)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 159: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified) (in java.io.FileInputStream)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 112: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified) (in java.io.FileInputStream)
+Post on Class menu
+Post on Class menu
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\Net.java, line -2: java.net.BindException:
+Address already in use: bind
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\Net.java, line 565: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\ServerSocketChannelImpl.java, line 344: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\ServerSocketChannelImpl.java, line 301: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\ServerSocketAdaptor.java, line 89: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\ServerImpl.java, line 145: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\HttpsServerImpl.java, line 50: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\DefaultHttpServerProvider.java, line 39: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\HttpsServer.java, line 95: java.net.BindException:
+Address already in use: bind (in sun.nio.ch.Net)
+Post on Class menu
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line -2: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 219: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified) (in java.io.FileInputStream)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 159: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified) (in java.io.FileInputStream)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 112: java.io.FileNotFoundException:
+..\keystore\mojKeystore1.jks (The system cannot find the path specified) (in java.io.FileInputStream)
+Post on Class menu
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line -2: java.io.FileNotFoundException:
+mojKeystore1.jks (The system cannot find the file specified)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 219: java.io.FileNotFoundException:
+mojKeystore1.jks (The system cannot find the file specified) (in java.io.FileInputStream)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 159: java.io.FileNotFoundException:
+mojKeystore1.jks (The system cannot find the file specified) (in java.io.FileInputStream)
+Error or exception for source not in project: C:\Users\Vegova\Desktop\http_strezniki\uporabi\FileInputStream.java, line 112: java.io.FileNotFoundException:
+mojKeystore1.jks (The system cannot find the file specified) (in java.io.FileInputStream)
+Post on Class menu
+Post on Class menu
+1773216360306: Listening for JDWP connection on address: 127.0.0.1:59129
+Connected to debug VM via dt_socket transport...
+Communication with debug VM fully established.
+GetterSetter Extension terminates
