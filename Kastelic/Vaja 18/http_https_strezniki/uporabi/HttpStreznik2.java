@@ -1,5 +1,3 @@
-package uporabi;
-
 import com.sun.net.httpserver.*;
 import java.io.IOException;
 import java.io.OutputStream;

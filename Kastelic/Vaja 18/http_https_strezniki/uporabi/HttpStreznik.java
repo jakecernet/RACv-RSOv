@@ -1,5 +1,3 @@
-package uporabi;
-
 import com.sun.net.httpserver.*;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,5 +15,6 @@ public class HttpStreznik {
         });
         server.start();
         System.out.println("Strežnik: http://localhost:8000");
+        System.out.println("Pritisni CTRL+C za izklop.");
     }
 }

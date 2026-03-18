@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 import java.security.*;
 import java.util.concurrent.Executors;
 
-public class HttpsStreznik {
+public class HttpsStreznik2 {
     public static void main(String[] args) {
         try {
             // 1. Nastavi vrata (uporabljam tvojih 5443)
@@ -13,10 +13,10 @@ public class HttpsStreznik {
             
             // 2. SSL Konfiguracija
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            char[] password = "mojeGeslo".toCharArray();
-            KeyStore ks = KeyStore.getInstance("JKS");
-            
-            try (FileInputStream fis = new FileInputStream("../keystore/mojKeystore1.jks")) {
+            char[] password = "mojeGeslo12".toCharArray();
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+
+            try (FileInputStream fis = new FileInputStream("../keystore/mojCert.p12")) {
                 ks.load(fis, password);
             }
 
@@ -39,8 +39,33 @@ public class HttpsStreznik {
                 }
             });
 
+            // ENDPOINT 2: /pozdravi
+            server.createContext("/pozdravi", exchange -> {
+                String resp = "ojlala, pozdravček";
+                byte[] bytes = resp.getBytes();
+                exchange.sendResponseHeaders(200, bytes.length);
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(bytes);
+                }
+            });
+
+            // ENDPOINT 3: /odjavi
+            server.createContext("/odjavi", exchange -> {
+                String resp = "{\"datum\":\"danes\",\"odjava\":\"sedajle\",\"stevec\":122}";
+                byte[] bytes = resp.getBytes();
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, bytes.length);
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(bytes);
+                }
+            });
+
             server.start();
             System.out.println("Varen strežnik teče na: https://localhost:5443");
+            System.out.println("Dostopni endpointi:");
+            System.out.println("  - https://localhost:5443/");
+            System.out.println("  - https://localhost:5443/pozdravi");
+            System.out.println("  - https://localhost:5443/odjavi");
             System.out.println("Za zaustavitev pritisni CTRL+C.");
 
             // 5. DODAJ: Sidro, ki drži glavno nit budno
