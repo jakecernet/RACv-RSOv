@@ -1,0 +1,127 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 20220285 (0x134897d)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=SI, ST=Slovenia, O=Vegova Lj, OU=Vegova Lj local Certificate Authority, CN=Vegova Lj Intermediate CA
+        Validity
+            Not Before: Mar 25 07:42:18 2026 GMT
+            Not After : Mar 25 07:42:18 2027 GMT
+        Subject: C=SI, L=Ljubljana, O=Vegova BCD, CN=jaka.cernetic.ct
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (4096 bit)
+                Modulus:
+                    00:f4:02:33:cc:42:06:ac:8f:3c:f6:56:05:2d:e0:
+                    fd:c8:2a:96:e7:8c:b9:80:ca:47:b3:30:92:cb:f7:
+                    63:1e:3f:08:a8:8b:4c:26:de:2c:18:56:1f:1b:aa:
+                    fe:85:96:20:d9:6f:80:80:38:f9:f8:97:85:23:fc:
+                    2e:9c:38:9a:1a:b5:ff:10:72:b7:2d:3b:ab:f0:02:
+                    65:2f:a2:f0:91:6d:7b:7f:7d:b8:b6:93:d0:c5:62:
+                    5d:aa:75:0b:fd:8e:37:d8:da:09:42:6a:54:84:af:
+                    58:cc:71:ee:7c:8e:ab:fb:95:b8:a0:dd:5a:55:7a:
+                    76:9a:c3:8c:77:04:d4:01:8b:e0:9a:e3:b2:4a:e2:
+                    09:ce:94:48:3c:a5:25:1f:92:20:ff:07:4e:32:50:
+                    83:51:9d:46:b4:f2:b1:2c:ac:bb:c7:65:0c:bf:19:
+                    96:ae:79:59:26:f0:a9:46:cc:4d:3c:46:94:49:e9:
+                    68:fd:92:38:15:d7:78:dc:c3:18:47:ba:f2:9f:66:
+                    5a:eb:0c:ef:a8:dd:48:48:00:b5:21:d4:83:8f:9b:
+                    a3:2c:5b:d0:aa:a0:cf:35:53:5b:ed:4d:8b:81:ad:
+                    f8:d3:e0:80:1f:e6:57:bf:c0:15:7f:11:79:8a:9b:
+                    a0:1a:b8:70:3a:c3:9e:e9:ac:18:6e:4f:34:55:a1:
+                    a4:cd:54:97:d4:17:49:6a:f4:a8:a0:4d:c1:34:55:
+                    9b:db:4a:7a:48:eb:12:78:d2:53:9e:0d:4e:2f:65:
+                    12:6a:9b:cc:ca:4d:9c:91:38:81:72:c9:30:64:6a:
+                    a4:9d:6e:e4:f1:b1:ad:e4:7d:a4:89:53:29:1f:52:
+                    21:03:a0:2d:8e:21:70:c2:52:0b:5f:ed:ef:b4:ab:
+                    19:9d:84:65:ed:9d:d3:4e:0d:01:b6:09:03:5b:6a:
+                    a1:e4:c8:4c:ac:a3:48:b7:58:b8:6f:df:1b:86:e1:
+                    0e:f2:64:f0:21:15:7c:fd:3f:9f:ef:51:b0:e8:54:
+                    96:5c:ec:90:d1:9b:52:d4:f0:f8:36:a8:39:1c:20:
+                    3c:6d:69:8a:63:b2:2b:1f:a1:b8:68:de:49:d0:c6:
+                    4f:50:bd:e3:36:85:af:6f:9c:c5:80:7a:6c:c8:2f:
+                    69:0e:55:e7:ab:b7:cd:3e:9d:cb:ea:27:68:6b:4e:
+                    04:2c:d6:df:00:e3:e4:d0:39:3c:e0:64:8a:0b:db:
+                    85:0d:bc:7b:37:da:03:73:37:40:1a:7c:a3:62:79:
+                    e1:64:22:ff:0b:d3:aa:b9:91:26:86:09:b9:97:d4:
+                    65:37:d0:df:1d:68:d2:5c:d0:be:a8:8e:22:1d:84:
+                    8e:1a:4f:a7:a8:07:17:54:11:91:4a:a2:71:cf:11:
+                    7f:3a:75
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Generated Certificate by php custom vegova script
+            X509v3 Subject Key Identifier: 
+                23:3F:9B:48:D4:74:2C:13:F7:42:B1:F3:DE:06:AC:D1:D4:F2:83:DC
+            X509v3 Authority Key Identifier: 
+                keyid:D5:4F:31:D5:95:25:0E:21:78:86:FE:88:81:F1:2A:FD:A5:EE:C9:FB
+
+            X509v3 Subject Alternative Name: 
+                DNS:jaka.cernetic.ct, DNS:192.168.106.93, IP Address:192.168.106.93
+    Signature Algorithm: sha256WithRSAEncryption
+         31:04:a3:48:11:55:86:80:d8:e2:33:22:78:7b:d6:93:35:b3:
+         23:d1:ab:0f:21:3c:1e:76:3c:01:90:89:a4:a5:d8:7b:43:08:
+         1b:65:3f:2c:d8:79:c5:8f:d0:e7:e0:c7:b8:53:0f:c0:11:25:
+         3f:d0:ad:56:de:d1:4d:ac:01:d5:0c:9a:ef:02:d6:67:41:11:
+         e6:c8:28:26:00:93:17:66:7b:50:30:09:57:2e:f7:b0:50:64:
+         eb:dc:ca:74:d9:e5:1b:1e:c9:72:36:15:ce:a0:0f:8e:0a:62:
+         b2:45:a0:90:f3:69:17:2f:d3:25:33:08:99:a8:e7:f1:0d:6c:
+         75:ac:21:d6:3c:99:29:d5:9e:0e:4c:87:01:e0:89:c0:90:ea:
+         08:ac:ef:f3:2e:0c:af:e1:a5:27:69:f4:78:e1:7d:6e:06:a4:
+         36:61:f1:67:d0:09:55:9d:03:d2:32:c3:5d:18:a5:ad:c5:4c:
+         67:3b:53:f1:0e:d5:ae:b7:cf:52:72:ea:59:40:1f:24:4f:ab:
+         9b:ed:44:fd:51:c2:57:cc:3d:59:ad:25:b5:c0:6b:ec:31:23:
+         0a:b4:58:b6:33:52:1c:09:aa:58:af:ed:c6:7a:e5:23:00:2f:
+         ae:00:d7:bd:6e:75:88:b6:e0:09:61:a4:8a:b0:7d:85:12:7f:
+         7b:c2:c3:6e:69:7f:51:2c:15:ec:bb:f9:6d:8d:3f:be:aa:d7:
+         49:65:c2:e7:ff:15:9a:88:00:98:f1:ae:78:1f:9c:45:92:4b:
+         30:36:27:cf:dc:90:eb:30:3f:63:8a:2b:46:22:e9:61:9b:26:
+         e9:c1:64:6f:85:98:21:25:d0:73:6f:8f:40:a9:0a:7d:33:79:
+         7a:9f:bf:22:f7:86:67:44:e2:5a:74:11:e5:cc:f5:35:89:1c:
+         c5:6b:86:9e:a8:fe:ee:dc:ea:10:36:bf:87:f9:cf:d9:1a:5f:
+         8c:99:1c:df:d5:50:1d:a3:56:5d:bd:84:4a:d0:dc:55:dd:23:
+         e7:53:9a:ad:60:3a:77:e2:b4:7c:54:09:31:81:19:8c:5b:d3:
+         cc:b2:e2:be:53:40:2e:e6:a9:ff:50:09:c8:a9:18:b7:d0:c6:
+         c7:c1:01:ef:2d:65:b5:8f:a5:e7:05:ea:e9:69:c8:97:b2:c3:
+         07:87:9c:68:7c:db:be:4f:db:b6:65:97:76:9e:b3:4e:9a:3e:
+         d4:e2:b0:ee:25:5b:20:05:36:e4:f3:0d:26:73:2a:19:11:42:
+         43:e0:82:96:0a:32:58:94:8a:47:a2:25:5f:83:e2:21:b6:eb:
+         7b:a8:a5:e2:91:55:37:40:6a:77:c6:6f:da:6d:36:36:c7:5d:
+         fa:d8:d8:55:d2:03:18:67
+-----BEGIN CERTIFICATE-----
+MIIGHDCCBASgAwIBAgIEATSJfTANBgkqhkiG9w0BAQsFADCBiDELMAkGA1UEBhMC
+U0kxETAPBgNVBAgMCFNsb3ZlbmlhMRIwEAYDVQQKDAlWZWdvdmEgTGoxLjAsBgNV
+BAsMJVZlZ292YSBMaiBsb2NhbCBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxIjAgBgNV
+BAMMGVZlZ292YSBMaiBJbnRlcm1lZGlhdGUgQ0EwHhcNMjYwMzI1MDc0MjE4WhcN
+MjcwMzI1MDc0MjE4WjBRMQswCQYDVQQGEwJTSTESMBAGA1UEBwwJTGp1YmxqYW5h
+MRMwEQYDVQQKDApWZWdvdmEgQkNEMRkwFwYDVQQDDBBqYWthLmNlcm5ldGljLmN0
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA9AIzzEIGrI889lYFLeD9
+yCqW54y5gMpHszCSy/djHj8IqItMJt4sGFYfG6r+hZYg2W+AgDj5+JeFI/wunDia
+GrX/EHK3LTur8AJlL6LwkW17f324tpPQxWJdqnUL/Y432NoJQmpUhK9YzHHufI6r
++5W4oN1aVXp2msOMdwTUAYvgmuOySuIJzpRIPKUlH5Ig/wdOMlCDUZ1GtPKxLKy7
+x2UMvxmWrnlZJvCpRsxNPEaUSelo/ZI4Fdd43MMYR7ryn2Za6wzvqN1ISAC1IdSD
+j5ujLFvQqqDPNVNb7U2Lga340+CAH+ZXv8AVfxF5ipugGrhwOsOe6awYbk80VaGk
+zVSX1BdJavSooE3BNFWb20p6SOsSeNJTng1OL2USapvMyk2ckTiBcskwZGqknW7k
+8bGt5H2kiVMpH1IhA6AtjiFwwlILX+3vtKsZnYRl7Z3TTg0BtgkDW2qh5MhMrKNI
+t1i4b98bhuEO8mTwIRV8/T+f71Gw6FSWXOyQ0ZtS1PD4Nqg5HCA8bWmKY7IrH6G4
+aN5J0MZPUL3jNoWvb5zFgHpsyC9pDlXnq7fNPp3L6idoa04ELNbfAOPk0Dk84GSK
+C9uFDbx7N9oDczdAGnyjYnnhZCL/C9OquZEmhgm5l9RlN9DfHWjSXNC+qI4iHYSO
+Gk+nqAcXVBGRSqJxzxF/OnUCAwEAAaOBwzCBwDAJBgNVHRMEAjAAMEAGCWCGSAGG
++EIBDQQzFjFHZW5lcmF0ZWQgQ2VydGlmaWNhdGUgYnkgcGhwIGN1c3RvbSB2ZWdv
+dmEgc2NyaXB0MB0GA1UdDgQWBBQjP5tI1HQsE/dCsfPeBqzR1PKD3DAfBgNVHSME
+GDAWgBTVTzHVlSUOIXiG/oiB8Sr9pe7J+zAxBgNVHREEKjAoghBqYWthLmNlcm5l
+dGljLmN0gg4xOTIuMTY4LjEwNi45M4cEwKhqXTANBgkqhkiG9w0BAQsFAAOCAgEA
+MQSjSBFVhoDY4jMieHvWkzWzI9GrDyE8HnY8AZCJpKXYe0MIG2U/LNh5xY/Q5+DH
+uFMPwBElP9CtVt7RTawB1Qya7wLWZ0ER5sgoJgCTF2Z7UDAJVy73sFBk69zKdNnl
+Gx7JcjYVzqAPjgpiskWgkPNpFy/TJTMImajn8Q1sdawh1jyZKdWeDkyHAeCJwJDq
+CKzv8y4Mr+GlJ2n0eOF9bgakNmHxZ9AJVZ0D0jLDXRilrcVMZztT8Q7VrrfPUnLq
+WUAfJE+rm+1E/VHCV8w9Wa0ltcBr7DEjCrRYtjNSHAmqWK/txnrlIwAvrgDXvW51
+iLbgCWGkirB9hRJ/e8LDbml/USwV7Lv5bY0/vqrXSWXC5/8VmogAmPGueB+cRZJL
+MDYnz9yQ6zA/Y4orRiLpYZsm6cFkb4WYISXQc2+PQKkKfTN5ep+/IveGZ0TiWnQR
+5cz1NYkcxWuGnqj+7tzqEDa/h/nP2RpfjJkc39VQHaNWXb2EStDcVd0j51OarWA6
+d+K0fFQJMYEZjFvTzLLivlNALuap/1AJyKkYt9DGx8EB7y1ltY+l5wXq6WnIl7LD
+B4ecaHzbvk/btmWXdp6zTpo+1OKw7iVbIAU25PMNJnMqGRFCQ+CClgoyWJSKR6Il
+X4PiIbbre6il4pFVN0Bqd8Zv2m02Nsdd+tjYVdIDGGc=
+-----END CERTIFICATE-----

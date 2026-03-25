@@ -61,11 +61,11 @@ public class SimpleHTTPSServer {
             SSLContext sslContext = SSLContext.getInstance("TLS");
 
             // initialise the keystore
-            char[] password = "mypassword".toCharArray();
-            KeyStore ks = KeyStore.getInstance("JKS");
-            ///FileInputStream fis = new FileInputStream("testkey.jks"); 
-            FileInputStream fis = new FileInputStream("mykey.keystore");
+            char[] password = "password".toCharArray();
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+            FileInputStream fis = new FileInputStream("../certificate_infos/jaka.cernetic.p12");
             ks.load(fis, password);
+            fis.close();
 
             // setup the key manager factory
             KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
