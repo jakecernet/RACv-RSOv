@@ -1,0 +1,24 @@
+
+Spremeba repozitorijev, ki bodo dostopni na tekmovanju:
+
+pi ima repozitorije definirane v
+   /etc/apt/sources.list
+   
+   
+  - mimogrede, večina nastavitev je v /etc ali /usr/etc folderjev, če poznaš ime datoteke in ne veš kje je,
+     iščeš kot find /etc -name="sorces.list" [-print]  
+   
+ izpis vsebine datoteke:
+    cat /etc/apt/sources.list
+
+ trenutna vsebina kaže na nek naslov v raspbian.org 
+   - vrstico pokomentiramo (# na začetek vrstice)
+   - dodamo link na arnesov mirror kot:
+       deb https://ftp.arnes.si/mirrors/raspbian/raspbian/ stretch main contribnon-free rpi
+
+po vsaki spremembi:
+
+   	   apt-get update 
+	   (če teži za privilegiji pač :
+	    sudo apt-get update
+	   )

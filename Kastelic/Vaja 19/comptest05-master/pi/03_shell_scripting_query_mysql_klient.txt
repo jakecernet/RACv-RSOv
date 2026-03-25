@@ -1,0 +1,198 @@
+------------------------------------------------------------->>>>>> simulacija branja z DHT11 in kreiranje povpraševanja za dodajanje vrednosti v bazo:
+dht-ja nimam, zato ga bom simuliral s svojo skripto;
+predpis pravi, da bo dan program, ki bo rezultat meritve izpisal na zaslon, domnevam, da bo one-shot (ga moraš zagnati, da naredi eno meritev, sicer je težko prestrezati
+standardni izhod);
+v tem primer bo potrebno napisati skripto, ki bo periodično zagnala meritev, vzela rezultat in ga zapisala na strežnik
+siulacija meritve bo narejena z generacijo naključnega števila v obliki 10kratnika temperature ...
+
+mimogrede; raspbian ima privzeto nameščeno knjižnico gnu-tools, lahko kje koristi !
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+echo $RANDOM                     # bash specifično ; RANDOM uporabiš kot spremenljivko ($)
+echo $(($RANDOM%500))            # od 0 to 499 ; aritmetiko lahko izvedeš, če je izraz v dvojnih oklepajih !
+
+date                             # izpiše datum
+echo `date +"%d.%m.%Y"`          # preoblikujemo datum v skladu s formatom in rezultat kot niz posredujemo echo za izpis na zaslon
+                                 # karkoli pri ukazu date med back-ticke, se izvedeš
+echo `date +"%s"`                # datum v time stamp           
+
+
+zaradi lažje uporabe spišemo ukazno skripto test1.sh :
+
+	#!/bin/bash
+	echo $RANDOM
+	echo $(($RANDOM%500))
+	date
+	echo `date +"%d.%m.%Y"`
+	echo `date +"%s"`
+
+shranimo, naredimo izvršljivo:
+
+	chmod +x test1.sh
+
+in jo izvedemo kot:
+
+	test1.sh
+  
+iz tekočega /delovnega/ direktorija bo to verjetno težko, zato jo izvedemo kot:
+
+	./test1.sh  
+  
+  
+-------------------------------------------------
+ok., napišemo skripto, ki simulira meritev; zagon skripte na zaslon izpiše : za
+  temperatura=122,vlažnost=144
+  
+  --> da, dva, to omogoča dhr, ker ne vemo, kaj nam bodo dali, vzamemo tole
+  --> pri obdelovanju tega izhoda se zanašamo na fiksne formate : , - deli podatke, = - loči ključ podatka od vrednosti
+-------------------------------------------------  
+
+meritev.sh
+
+#!/bin/bash
+
+echo temperatura=$(($RANDOM%500)),vlaznost=$(($RANDOM%1000))
+
+shranimo, nato:
+  chmod +x meritev.sh
+in testno zaženemo :
+  ./meritev.sh
+
+vidimo, da gre izpis na zaslon, sedaj ga skušamo prestreči. Ker verjetno na to skripto ne bomo imeli vpliva, spišemo skripto, ki meritev.sh kliče in uporabi njen izhod, da
+skreira sql stavek za zapis vrednosti:
+
+testKlica.sh
+
+	#!/bin/bash
+
+                                   # meritev.sh zaganjamo z lupino, atribut x(izvršljivost mora biti postavljen; preveri z ls -al meritev.sh)
+	# ./meritev.sh                 # direktni zagon, izpis na zaslon - zgolj za test,
+	zajetiNiz = `./meritev.sh`     # namesto na stdout se bo rezultat izvajanja skripte zapisal v spremenljivko; rabimo za nadaljne procesiranje
+
+	echo tole je iz spremeljivke : $zajetiNiz  # izpis spremeljivke
+	
+-----------------------------------------------------------------------------
+
+predelava besedila (za sql querry); uporabimo najenostavnejše :
+ vsi so filtri : jih lahko vtaknemo med dva procesa (ala: vhod je vedno stdin , izhod vedno stdout)
+ 
+  tr  - (translate) - omogoča brisanje in / ali zamenjavo  v besedilu 
+  cut - (cut) - lahko izloči delček iz niza (iz pozicije znakov ali iz želenega bloka)
+  
+  // sed zgolj pavšalno
+  
+-----------------------------------------------------------------------------	
+nakaj testov:
+
+##### tr #####
+
+# echo koza stara       - izpiše niz koza stara na zaslon (stdout) 
+echo koza stara | tr 'ak' '12'    # zamenja vse a-je z 1 in se k-je z 2 , izpiše na standardni izhod
+echo koza stara | tr -d 'a'       # odstrani vse a-je iz niza; pomni -d !
+
+echo '  - 		:-koza stara ' | tr -d '[:space:]'     #odstrani vse neizpisljive znake iz niza (presledke,tabulatorje, ...)
+
+#man tr da še nekaj uporabnih vzorcev [:digit:] ali [:lower:]
+
+echo 'Sosedova krava je nora' | tr [:lower:] [:upper:]  # niz v uppercase ....
+
+
+##### cut #####
+
+#pri naslednih testih bo vhod ls -al na -home- folderju (/home/pi)
+#ls -al da izhod v obliki :
+# atributi nodes user group dolžina mesec dan ura ime    ---> 9 polj, ločenih s presledki
+
+###### -f : fields v kombinaciji z -d : delimiter med polji
+ls -al | cut -d ' ' -f2    # izpiše drugo polje (nodes)
+ls -al | cut -d ' ' -f1,3  # izpiše prvo in tretje polje; polja ločena s presledkom
+
+## zadeva pri ls -al ni zanesljiva, ker polja niso vedno locena s po enim presledkom, če to želiš, rabiš več procesiranja :
+
+ls -al | sed -e 's/ \+/ /g'                 # pazi na presledke : sed - strream editor, uporabimo search in replace global (vse v vrstici);
+                                            # za s - kot serach pride dve polji ločeni z /1/2/  v 1 je search kriterij, v 2 replace
+                                            # / \+/ je regularen izraz, ki pravi, da zamenja enega ali več presledkov							
+ls -al | sed -e 's/[[:space:]]\+/ /g'       # enako kot predhodni, le da zamenja vse white-space znake (posix)
+
+#če rabimo odstraniti vse presledke
+ls -al | sed 's/[[:space:]]//g'
+
+# ker vemo, da so atributi v 1 stolpcu, imena datotek pa v 9-tem, sedaj lahko :
+ls -al | sed -e 's/[[:space:]]\+/ /g' | cut -d' ' -f1,9
+ali pa
+ls -l | awk '{print $1,$9}'                 #  parmeter awk-ja je program, z uakzi, ki jih lahko nanizaš $1,$9 sta stolpca, ki jih kot spremeljivke okolja skripte
+                                            #  uporabiš v programu, privzeti delimiter za polja oz. parametre poslane v awk program je presledek, lahko ga pa nastaviš
+                                            #  z awk -F ':'
+
+#### ce bi slo tole, bi bilo super pa ne gre .... :  echo 30.3 | awk 'printf(\"use remoteDB; insert into testtable values('','','$1');\")'   											
+
+###### -c : po odmiku znakov od začetka niza
+
+#dostopnostni atributi drwxrwxrwx    d - tip datoteke (direktorij, običajni file, character oriented, block oriented, temporary, ...) tole je direktorij, če ni nič je regular file
+  rwx je v treh skupinah po 3 prva skupina pripada lastniku (user), druga skupini (group) tretja velja za vse ostale (ohers)
+  
+zanimajo nas zgolj atributi za lastnika: iz ls -al vidimo, da so to znaki 2,3,4 oz začetka vrstice :
+
+ls -al | cut -c2,3,4     # vrne znake 2-4 od začetka vrstice -al
+ls -al | cut -c2-4       # vrne znake 2-4 od začetka vrstice
+ls -al | cut -c2-4,8-10  # vrne znake 2-4 in 8-10 od začetka vrstice
+ 
+ 
+------------------------------------------------------------------------------------
+! v podatkovno bazo vnašamo 2 oz. tri polja (id,timest,vrednost). tudi timestamp nima smisla vnašati ampak ga generiramo pri zapisu v bazo (
+  dodamo default value pri definiciji atributa v tabeli kot current-timestamp). 
+  V temle primeru bo generiran v skripti, da sql ne bo preenostaven
+------------------------------------------------------------------------------------
+   timest
+  `vrednost  
+----------
+#!/bin/bash
+
+# poskušamo sestaviti query za insert in nasloviti mysql strežnik
+# v skriptah pri prirejanju vrednosti spremenljivkam ne pozabi, da pred ali za enačajem ne sme bit presledkov !
+
+VALU=$(($RANDOM%500))
+sql_string="use remoteDB; insert into testtable values('','',$VALU);"  
+
+echo $sql_string | /usr/bin/mysql -u pepi -h 192.168.1.75 --password=pepipepi remoteDB # string direktno pošljemo klientu da da pošlje serverju
+
+#če datum/timestamp ni defaault - current-timestamp, zgeneriramo in pošlemo še tega:
+#time_st=`date +"%s"`
+#meni timestamp ne deluje, karkoli zapišem je 0000-00-00 00:00:00 !!!! ampak to je baje MariaDB
+#gremo raje z običajnim datumom, ki se sam pretvori v tiestamp ... (????)
+
+time_st=`date +"%Y-%m-%d %H:%M:%S"`
+sql_string1="use remoteDB; insert into testtable values('','$time_st',$VALU);"  
+echo $sql_string1 | /usr/bin/mysql -u pepi -h 192.168.1.75 --password=pepipepi remoteDB 
+
+  
+---------------------- uporabimo testKlica.sh
+
+testEnegaKlica.sh
+
+	#!/bin/bash
+
+                                   # meritev.sh zaganjamo z lupino, atribut x(izvršljivost mora biti postavljen; preveri z ls -al meritev.sh)
+	# ./meritev.sh                 # direktni zagon, izpis na zaslon - zgolj za test,
+	zajetiNiz = `./meritev.sh`     # namesto na stdout se bo rezultat izvajanja skripte zapisal v spremenljivko; rabimo za nadaljne procesiranje
+
+	#izločimo temperaturo iz niza meritve :
+	
+	VALU=`./meritev.sh | tr -d [:space:] | cut -d"," -f1 | cut -d"=" -f2` # odstranimo vse white-space-e, nato vzamemo zgolj polje v katerem je temperatura in nato izločimo
+	                                                                      # zgolj vrednost
+	
+	time_st=`date +"%Y-%m-%d %H:%M:%S"`                                   # generiramo datum, ker time stamp ne dela, se zna pretvoriti v timestamp v bazi
+	
+    sql_string1="use remoteDB; insert into testtable values('','$time_st',$VALU);"            #ustvarimo query
+    echo $sql_string1 | /usr/bin/mysql -u pepi -h 192.168.1.75 --password=pepipepi remoteDB   #posredujemo query preko klienta na server
+	
+	
+	
+//---------------------------------------- ponavljanje in zagon 
+// dht ima tmeout : od meritve do meritve mora preteči kar nekaj časa, (pregled dokumentacijo, se ne spomnim več)
+//
+//
+// ---------------------------------	
+	

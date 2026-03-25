@@ -1,0 +1,88 @@
+---------------------------- orodja  so v /sbin : iw*, wpa_*
+
+// -- kako do imen interface-ov ?
+iw dev            # wireless
+ip a, ip list     # vsi interf
+ip a show wlan0   # test configuracije wlan0  (ali ima ip ? )
+
+wlan0   -- default wifi
+
+iw wlan0 scan  # vrn scan omrežja po access pointih, če rabiš samo SSID-je:
+iw wlan0 scan | grep SSID
+
+iw wlan0 link   # a je kaj z njim : a je povezan ? na kateri SSID? s kakšno hitrostjo
+
+------------------------------------------------------------------------- postopkek
+(alternativa je tule : https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
+postopke postavitve s konzole :  (verjetno s SUDO :)
+
+iw wlan0 scan  # najdemo SSID - recimo mojSSID
+wpa_passphrase mojSSID >> /etc/wpa_supplicant.conf              #generiramo koniguaracijo v /etc/wpa_supplicant.conf  - pozove na vpis passworda
+                                                                #preveri supplicat : cat /etc/wpa_supplicant.conf
+wpa_supplicant -B -D wext -i wlan0 -c /etc/wpa_supplicant.conf  #connect to wireless : -D wext je driver (-Dnnl80211,wext)
+#wpa_supplicant -B -i wlan0  -c /etc/wpa_supplicant.conf
+#wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B -D   #hm, če driverja ne specificiraš, prevzame default linux driver
+iw wlan0 link                                                   #testiramo
+dhclient wlan0                                                  #ta se verjetno ne bo autoatično zagnal : get ip from DHCP
+
+#še testi:
+ip addr show wlan0
+ip route show 
+ping 8.8.8.8                    #znanega in predvidevamo dosegljivega IP-ja
+
+# no ja, in če že hočeš in ni  :
+# ip route add default via 10.0.0.138 dev wlan0      #gw
+
+#če na roko spreminjaš knfiguracijo in je bila ta predhodno aktivna, izvedi po tem še
+wpa_cli -i wlan0 reconfigure
+
+technologies
+
+
+
+//-------------------------------
+pinouts-raspberry ....                https://pinout.xyz/#
+--------------------
+https://www.sigmdel.ca/michel/ha/rpi/syslog_02_en.html  ## glej konec dokumenta 1-wire !!!
+
+---> glej /sys/bus/w1/devices/28*/w1_slave   kjer lahko bereš w1 slave device ....
+
+a ta preverila ali je potebno 1-wire aktivirati z overlayem
+
+
+
+sskripta kot filter : (filter je : vzame nekaj iz stdin in zapiše/če zapiše na stdout )
+
+#!/bin/bash
+
+#
+#  vzame standardni vhod (da v sprmenljivko, da zgleda bolj kunštno) in izpiše na standardni izhod med dve vrstici z :
+#
+
+echo :
+kajIzVhoda=`cat /dev/stdio`
+echo $kajIzVhoda
+echo :
+
+
+
+---------------------------------------
+https://www.raspberrypi.org/forums/viewtopic.php?t=213406                  #glej za lsmod   : ali 1-w nastane, ko ga priklopite ?
+
+
+
+sudo modprobe w1-gpio
+sudo modprobe w1-therm
+ls /sys/bus/w1/devices
+
+----------->> /lib/modules/`uname -r`
+
+#----------------------------------------------------- glej zadnji razdelek -->> nujno preveriti, kako se dht11 obnaša
+https://www.sigmdel.ca/michel/ha/rpi/syslog_02_en.html
+
+https://www.abelectronics.co.uk/forums/
+https://www.abelectronics.co.uk/forums/thread/50/make-sensors-show-up-in-sys-bus-w1-devices
+
+
+zame : node-red
+

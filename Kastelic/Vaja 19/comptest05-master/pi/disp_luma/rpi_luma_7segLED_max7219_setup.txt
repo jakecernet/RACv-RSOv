@@ -1,0 +1,55 @@
+'''
+https://github.com/rm-hull/luma.examples
+vzameš primer:
+https://github.com/rm-hull/luma.examples/blob/master/examples/sevensegment_demo.py
+in spraviš vse nastavitve direkno v datoteko, da jih ni potrebno prenašati kot parametre
+
+luma privzeto uporablja SPIO s konfiguracijo:
+------------------------------------------------
+data_pin  : GPIO 10 (spi0 mosi),
+clock_pin : GPIO 11 (spi0 sclk), 
+cs_pin    : GPIO 8  (spi0 ce0)
+
+--------------------------------
+za test po priklopu uporabimo demo iz sevensegment_demo.py (glej link zgoraj)
+z rahlo modifikacijo (konfiguracije in definicije fiksno dodamo v demo):
+
+'''
+----------od tule
+'''
+
+import time
+from datetime import datetime
+
+from luma.led_matrix.device import max7219
+from luma.core.interface.serial import spi, noop
+from luma.core.virtual import viewport, sevensegment
+
+# create seven segment device
+serial = spi(port=0, device=0, gpio=noop())   #spidev0.0
+device = max7219(serial, cascaded=1)          #koliko jih je kaskadno vezanih        
+seg = sevensegment(device)
+
+'''
+-----------do tule
+'''
+
+
+# ----------------------------
+# v originalnem demo 'sevensegment_demo.py
+# na začetku main() imaš tole:
+
+def main():
+    # create seven segment device
+    device = get_device()
+
+    if not hasattr(device, 'segment_mapper'):
+        sys.exit('sevensegment is not supported on a {} device'.format(
+            device.__class__.__name__))
+
+    seg = sevensegment(device)
+
+# kjer definira 'device' in 'seg'. kodo od komentarja dol do konca navedbe odstraniš in nadomestiš s tisto zgoraj
+# importe pa jasno daš na začetek fajla
+
+

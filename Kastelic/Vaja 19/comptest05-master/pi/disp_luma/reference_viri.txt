@@ -1,0 +1,17 @@
+raspberry (3,4) pinouts:
+   https://pinout.xyz/pinout/spi
+
+python knjižnice:
+  https://github.com/rm-hull :
+
+  dokumentacija:
+    oled: https://luma-oled.readthedocs.io/en/latest/index.html
+    lcd:  https://luma-lcd.readthedocs.io/en/latest/index.html
+
+za sam display je vseeno ali je tft ali oled ali kaj drugega. Po inicializaciji so metode (funkcije) enake ne glede na tip display-a ali način priključitve.
+
+
+
+
+ 
+

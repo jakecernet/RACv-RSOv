@@ -1,0 +1,52 @@
+https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md
+
+sudo iwlist wlan0 scan                       //
+   --> SSID :--   ESSID:ssidOmrezja
+   --> auth metodo : --IE:IEEE 802.11i/WPA2 Version 1
+
+   wpa_supplicant:
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+
+ za vsak network dodaš:
+   
+    network={
+		ssid="ssidOmrezja"
+		psk="testingPassword"
+	}
+
+za preencripted 32 bit psk (hex) izvedeš:
+
+  wpa_passphrase "ssidOmrezja" >> /etc/wpa_supplicant/wpa_supplicant.conf 
+  
+rekonfiguracija interface-ja:
+
+  wpa_cli -i wlan0 reconfigure
+  
+in test:
+  ip addr
+  ifconfig wlan0
+  
+*****
+ še tole : 
+   dodaš country code v wpa_supplicant
+
+    country=SI   
+	
+// ---------------------------------------------------------- headless (kdo rabi monitor)	
+
+v boot folderju:
+   1) prazen ssh file :
+        touch ssh
+   2) boot/wpa_supplicant.conf file:
+   
+        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+		update_config=1
+		country=US
+
+		network={
+			ssid="myssid"
+			scan_ssid=1
+			psk="mypass"
+			key_mgmt=WPA-PSK
+		}
+	  

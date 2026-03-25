@@ -1,0 +1,98 @@
+I)
+
+izhodišče :
+dana je skripta na standardni izhod izpisuje vrednost temperature
+Scenarij : vrednost je potrebno prestreči s svojo skripto in jo prenesti:
+    a) strežniku na lokalnem rač.???  - ki jo bo posredoval mysql/mariadb strežniku na serverju
+	b) skripti, ki bo posredovala sql stavek mysql odjemalcu
+	
+b) shell skripting	
+	
+------------------------------------------------------------------------------------- mysql client in priprava mysql- serverja
+rabimo mysql-client	:
+
+	sudo apt upgrade
+	sudo apt-get install mysql-client   # sudo apt install mariadb-client
+
+
+nekje moramo imeti server, recimo, da je na ip naslovu 192.168.1.75
+v scenariju predvidimo, da bomo imeli dostop do mysql strežnika z username in password in to tudi naredimo doma:
+   - odpremo firewall za port 3306 (mysql) / če ga npr. xampp še ni odprl
+   - se zlogiramo na mysql server. Za potrebe remote dostopa naredimo novega uporabnika in morebiti bazo
+   
+        baza : remoteDB    // za test narediš tole kar s phpmyadmin, 
+		tabela : testtabla
+		
+		user+privilegiji:         ( user:  pepi / password: pepipepi )
+		
+
+         CREATE USER 'pepi'@'%' IDENTIFIED VIA mysql_native_password USING '***';
+		 GRANT ALL PRIVILEGES ON *.* TO 'pepi'@'%' REQUIRE NONE WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+		 GRANT ALL PRIVILEGES ON `remotedb`.* TO 'pepi'@'%';
+		 
+		 #opomba: user mora biti specificiran kot pepi@% ker mu le tako dajete dostop od kjerkoli, sicer je namesti %i IP mašine s katere delate povezavo
+		 #opomba: zgornje je pobrano kot export iz mojega mysql serverja, delamo pa to takole:
+		 
+		 CREATE USER 'pepi'@'%' IDENTIFIED BY 'pepipepi';
+         GRANT ALL PRIVILEGES ON remotedb.* TO 'pepi'@'%' WITH GRANT OPTION 
+		 
+		 po obeh variantah izvedeš NUJNO še:
+		 
+		 
+		 flush privileges;
+   
+        sicer se lahko zgodi, da user ne bo uproaben do naslednjega reboota mysql serverja
+	
+in  
+  GRANT ALL on mydb.* to myapp@raspi-ip identified by 'Strong Password';
+  
+------------------------------------------------------------------------------------ test dostopa iz raspberry-ja
+
+  # kje je mysql (interaktivni odjemalec) : skušaš ga zagnati in pogledaš, če ga siste najde, če ne, ga je potrebno na sistemu poiskati
+  # če 'locate mysql' ne dela, uporabiš 'find':
+  find /usr -name "mysql"                         #išče po direktorijih pod /usr; šanse so še /bin, /sbin, ... ponavadi drugje ni
+  
+  --- mojega je najdel kot /usr/bin/mysql
+  
+  # izvedemo test:
+  
+     /usr/bin/mysql -u pepi -h 192.168.1.75 -p"pepipepi" remoteDB
+	 # pepi je username, -h je naslov hosta, kjer je mysql-server za -p je password (pazi, je v narekovajih in vmes ni presledka; namesto te oblike
+	 # raje uporabite --password=pepipepi ker narekovajev ni treba in je bolj ugodna sintaksa za skripto )
+
+  ------------------------------
+  poskusite kreirati tabelo preko odjemalca, novo bazo preko odjemalca nekaj ntri zapisati : da se prepričate, da imate vse potrebne dostope
+  
+  -------------------------------------------------
+  
+  recimo, da kreiramo testno. Naslednjo vsebino shranimo v datoteko crTable.sql :
+  
+use remoteDB; 
+CREATE TABLE `testtable` (
+  `id` int(11) NOT NULL,,
+  `timest` timestamp ,
+  `vrednost` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_slovenian_ci;
+
+ALTER TABLE `testtable`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `testtable`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+
+nato izvedemo :
+
+     /usr/bin/mysql -u pepi -h 192.168.1.75 --password=pepipepi remoteDB < crTable.sql
+	 
+na strežniku bi se morala skreirati tabela testtable in to kaže tudi način, kako interaktivno uporabiti mysql klienta	
+(uporabimo preusmerite standardnega vhoda: namesto njega uporabmo vsebino datoteke crTable.sql) 
+	 
+	 
+------------------------------------------------------------->>>>>> simulacija branja z DHT11 in kreiranje povpraševanja za dodajanje vrednosti v bazo:
+
+dht-ja nimam, zato ga bom simuliral s svojo skripto;
+predpis pravi, da bo dan program, ki bo rezultat meritve izpisal na zaslon
+	 
+	 

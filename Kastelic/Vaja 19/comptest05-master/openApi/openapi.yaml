@@ -1,0 +1,112 @@
+openapi: 3.0.1
+info:
+  title: Streljanje v tarčo - demo API 2019
+  description: 'Primer enostavnega API z zgolj GET metodami http protokola. Več najdete v navodilih vaj na platformi [http://ekm.vegova.si](ekm.vegova.si)  in v lokalnih git repozitorijih [https://gitlab.vegova.si](https://gitlab.vegova.si)   Swagger
+   orodja so dosegljiva na naslovu [http://editor.swagger.io](editor.swagger.io) 
+   Poenostavitve : zgolj GET metoda, en sam podatkovni model, brez Auth'
+  termsOfService: http://ekm.vegova.si/terms/
+  contact:
+    email: apiteam@vegova.si
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Več o Swagger -ju
+  url: http://swagger.io
+servers:
+- url: https://www.mojHost.net/api
+- url: http://www.mojHost.net/api
+tags:
+- name: strel
+  description: vse infrmacije o streljanju
+  externalDocs:
+    description: gitlab Vegova primeri
+    url: https://gitlab.vegova.si
+paths:
+  /gen:
+    get:
+      tags:
+      - strel
+      summary: gen a serie of shots
+      description: 10 shots single timestamp as serie identification
+      operationId: genShotSeries
+      responses:
+        200:
+          description: uspešna operacija
+          content: {}
+        400:
+          description: Invalid status value
+          content: {}
+  /get:
+    get:
+      tags:
+      - strel
+      summary: vrne seznam vseh strelov
+      description: vne vse strele
+      operationId: getVseStrele
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Strel'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Strel'
+        400:
+          description: Invalid status value
+          content: {}
+  /get/{serijaId}:
+    get:
+      tags:
+      - strel
+      summary: poišči serijo po zaporednem ID
+      description: vrne želeno serijo
+      operationId: getSerijoStrelovById
+      parameters:
+      - name: serijaId
+        in: path
+        description: ID serije za vračanje
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: operacija je bila uspešna
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Strel'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Strel'
+        400:
+          description: napačen ID serije
+          content: {}
+        404:
+          description: serije ni moč najti
+          content: {}
+components:
+  schemas:
+    Strel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        x:
+          type: integer
+          format: int32
+        y:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+          format: date-time

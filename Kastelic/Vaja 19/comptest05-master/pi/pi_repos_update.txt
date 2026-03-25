@@ -1,0 +1,76 @@
+Raspbian _ linkd
+
+
+instalacija:
+   Rasbian Stretcs Lite    :   https://www.raspberrypi.org/downloads/raspbian/
+   Balena Etcher (Flasher) :   https://www.balena.io/etcher/
+   
+survivor (network) config:  https://www.balena.io/etcher/
+
+
+raspbian stretch : bazira na Debian-u
+arnesov package repository : https://ftp.arnes.si/mirrors/raspbian/raspbian/dists/stretch/
+
+repozitoriji:
+
+   najprej poglej v:
+      /etc/apt/sources.list
+
+  https://www.raspbian.org/RaspbianRepository
+  Europe*    Slovenia    ARNES    (ftp|http)://ftp.arnes.si/mirrors/raspbian/raspbian     rsync://ftp.arnes.si/raspbian/ 
+  
+  seznam paketov v repozitoriju:
+       http://archive.raspbian.org/raspbian/dists/stretch/main/binary-armhf/
+	   
+	   
+ /*   
+  *    pregledaš tole in zamenjaš miror na arnesov mirror:
+  * 
+
+/etc/apt/sources.list
+
+		deb http://mirrordirector.raspbian.org/raspbian/ jessie main contrib non-free rpi
+		# Uncomment line below then 'apt-get update' to enable 'apt-get source'
+		#deb-src http://archive.raspbian.org/raspbian/ jessie main contrib non-free rpi
+		deb https://ftp.arnes.si/mirrors/raspbian/raspbian/ stretch main contribnon-free rpi
+
+	The directory /etc/apt/sources.list.d contains the file
+
+		raspi.list
+
+/etc/apt/sources.list.d/raspi.list
+
+	deb http://archive.raspberrypi.org/debian/ jessie main ui
+	# Uncomment line below then 'apt-get update' to enable 'apt-get source'
+	#deb-src http://archive.raspberrypi.org/debian/ jessie main ui
+
+
+ ----------------------------- adding
+    echo "deb http://apt.adafruit.com/raspbian/ jessie main" | sudo tee --append /etc/apt/sources.list
+	get -O - -q https://apt.adafruit.com/apt.adafruit.com.gpg.key | sudo apt-key add -
+	/* plush download new package list aka. update package list */
+	sudo apt-get update
+ 
+ --------------------------- opomba zame (jessie --> stratch)
+ vsi repoti so isti, le zamenjaš jessie s stratch npr:
+ 
+     (sudo) sed -i 's/jessie/stretch/g' /etc/apt/sources.list    // stream editor search&replace global/ignorecase 
+     (sudo) apt-get update
+	 
+	 // ----------------
+	    apt-get update
+        apt-get upgrade
+		apt-get dist-upgrade        // za tiste, ki so hold-back zaradi dep's
+	 
+ */
+ 
+ 
+ node-setup
+ https://thisdavej.com/beginners-guide-to-installing-node-js-on-a-raspberry-pi/
+ https://thisdavej.com/upgrading-to-more-recent-versions-of-node-js-on-the-raspberry-pi/
+ https://thisdavej.com/make-your-raspberry-pi-web-server-available-on-the-internet-with-node-js/
+ https://thisdavej.com/create-a-web-server-in-node-without-any-code/
+ 
+ https://github.com/wimvanderbauwhede/limited-systems/blob/master/index.md
+ 
+	   

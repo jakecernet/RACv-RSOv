@@ -1,0 +1,83 @@
+06_16_RSO04_vaja_01.txt 
+                                      Vaja 16
+                                    (v01., draft , marec 2023)
+
+opomba: oddelek A je opravil svoje že na vajah 30.3. in jim ni potrebno dodatno oddajati poročila.
+									
+Izhodiščni namen:
+  izdelava kvalificiranega digitalnega potrdila, ki ga bomo v nadaljevanju potrebovali za
+     avtentifikacijo, kriptiranju, elektronskemu podpisovanju
+  raba lokalnega razreševalnika spletnih naslovov (local resolver)									
+* kvalificirana potrdila:
+*   openssl
+*   kreiranje samopodpisanega potrdila
+*   kreiranje privatnega ključa, zahtevka za potrdilo
+*      - pošiljanje v generacijo/podpis 
+*      - prevzemanje potrdila
+
+
+
+1. Naloga
+     Sledite navodilom iz druge naloge dokumenta NSAVaja32new.docx z naslova https://gitlab.vegova.si/SerhioN/comptest05/-/tree/master/: (Naloga 2, 
+     alineji a in b)
+     Konfiguracijska skripta za openssl, ki bo omogočila generiranje pravilno strukturiranega potrdila, se nahaja v datoteki config_vaje.cfg mape
+     https://gitlab.vegova.si/SerhioN/comptest05/-/tree/master/certificate_infos
+      - generirajte zahtevek za kvalificirano digitalno potrdilo
+      - podpišite/pridobite podpisano potrdilo s strani podpisnika na naslovu 193.2.190.6
+    Namestite potrdilo podpisnika v shrambo zaupanja vrednih certifikatov sistema windows
+    Namesite svoje podpisano potrdilo v shrambo certifikator sistema windows (avtomatična izbira vrste shrambe)
+
+2. Naloga
+     V izdelanem digitalnem potrdilu je v SAN polju DNS med drugim zapisana tudi (vaša) domena. V primeru, da postavljamo strežnik za to domeno, lahko to
+     potrdilo služi ugotavljanje istovetnosti te domene.
+     Preslikavo domenskim imen v IP naslove na spletu običajno izvaja storitev DNS. Za začasne/lokalne definicije pa si brez spremembe vpisa v DNS lahko
+     pomagamo z lokalnim razreševanjem domenskih imen (local resolving with local resolver);
+     lokalni resolver na Windows sistemih predstavlja datoteka  windows/system32/drivers/etc/hosts
+     katere vsebine je dvostopična tabela; v prvem je IP številka računalnika, v drugem (poljudno)domensko ime
+
+     a)'prilepite' vašo domena (iz kvalificiranega potrdila) na IP računalnika za katerim sedite in shranite spremenjeno datoteko
+     b) v konzolnem oknu vtipkajte:  ping  ime.primek.si
+        odzvati se mora računalnik z vašim IP. Če ne popravljate dokler se to ne zgodi. Nato odziv prilepite v poročilo te vaje
+
+3. Naloga
+    
+    a)
+    Preskusite oba strežnika (http in https) dana na naslovu:
+    https://gitlab.vegova.si/SerhioN/comptest05/-/tree/master/java
+
+    za https strežnik boste potrebovali certifikat (potrdilo). V prvi aproksimaciji generirate samopodpisanega, kot je v komentarju na začetku datoteke
+    z izvorno kodo. Preverite geslo in ime keystora (morata ustrezati tistim v kodi)
+
+    keystore je datoteka, v tem primer s končnico jks. Java lahko uporablja lastno shrambo za potrdila (to je to, v tem, primeru, keystore) 
+    ali pa tisto od Windows.
+
+    v poročilu zgolj specificirajte, ali strežnika delujeta in na katere endpointe (posamezna) odzivata.
+
+   b)
+   Uporabite 'svoj' openssl x.509 certifikat z java keystore
+
+      b.1) Pretvori x509 certificate v PFX obliko z OpenSSL
+      openssl pkcs12 -export -out marko.k.si.pfx -in marko.k.si.crt -inkey marko.k.si.key -name marko.k.si -CAfile rootCA.crt -noiter
+      (rezultat je .pfx datoteka, geslo MORATE podate, zapomnite si ga)
+
+      b.2a) Uvozi v keystore vrste JKS z javanskim orodjem keytool
+      keytool -importkeystore -srckeystore marko.k.si.pfx -srcstoretype pkcs12 -destkeystore moj_keystore.jks -deststoretype JKS
+      (če še nimate keystora, vam ga ustvari: datoteka moj_keystore.jks - pazi: vnašaš gesla za PFX z koraka b.1) in za keystore/če se kreira, 2x/
+
+   b.2b) Uvozi v keystore vrste PKCS12 z javanskim orodjem keytool; pkcs12 je industrjski standard
+   keytool -importkeystore -srckeystore marko.k.si.pfx -srcstoretype pkcs12 -destkeystore moj_keystore.p12 -deststoretype pkcs12
+   (če še nimate keystora, vam ga ustvari: datoteka moj_keystore.p12 - pazi: vnašaš gesla/
+
+
+  c) mimogre: v .p12 lahko exportirate direktno iz hrambe potrdil sistema windows ()
+
+  d) če CA certifikata ni v .p12 ali .jks naredite iz certifikatov skupek (bundle, tako, da enostavno datoteke skopirate v eno, CA naj bo na dnu:
+     copy marko.k.si.crt+rootCA.crt ca_bundle.crt  in v b1) uporabite -CAfile ca_bundle.crt  ....
+
+
+     v poročilo oddajte : a) dir mape v kateri sta oba keystora
+                        b) rezultat izpisa :
+                              keytool -list -v -keystore moj_keystore.jks
+
+                        c) rezultat izpisa :
+                              keytool -list -v -keystore moj_keystore.p12

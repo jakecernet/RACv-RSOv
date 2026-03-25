@@ -1,0 +1,93 @@
+0.  ---------------https://luma-oled.readthedocs.io/en/latest/hardware.html
+    Vse je dejansko na zgornjem linku
+	
+1. ------------kaj je z spi1 ?
+   1.a) spi mora biti omogočen (rasp-config, advanced, ...)
+   1.b) preveri   
+   # ls -al /dev/spi*
+    
+	/dev/spidev0.0  /dev/spidev0.1  /dev/spidev1.0  /dev/spidev1.1  /dev/spidev1.2
+	
+	(vse so v sintaksi bus.device oz. port.device  )
+	
+	rabimo zadnjega (po predvidenem setup-u), če ga ni:
+	dodaš v /boot/config.txt vrstico
+	   dtoverlay = spi1-3cs
+	in rebootaš pi-ja. 3cs mora biti, ker 1cs, 2cs omogočita zgolj prvi ali rva dva device-a
+	
+2.setup (rpi<-->display) je:
+
+     gpio            oznake na mojem displayu
+	 ---------------------------------------------
+     gpio 16 ce2	/CS
+     gpio 20 mosi	/SDA
+     gpio 21 clk	/SCL	
+	 
+	 gpio 26 		/RESET
+	 gpio 6 dc		/A0
+	 
+	 referenca a : https://pinout.xyz/pinout/spi
+	 
+	 16,20,21 predpisuje spi1, za reset,dc uporabiš poljubna neuporabljena porta (6, 26)
+	 
+	  
+3. ---------- https://luma-oled.readthedocs.io/en/latest/software.html	  
+   pip install --upgrade luma.lcd        # oziroma : pip install --upgrade luma.oled
+   
+4. ---------- testi
+    zgornji programčič dela na tft-ju, spodnji bi moral delati z oled; 
+	moj tft ima driver st7735R. funkcije so iste, razlika
+	nastopi samo v tistih parih vrsticah za setup device-a (poskusil na .9'' oled). So iz:
+	
+    https://luma-lcd.readthedocs.io/en/latest/python-usage.html  #ker pač nimam drugega
+    https://luma-oled.readthedocs.io/en/latest/python-usage.html
+
+    (razlikujeta se zgolj v inicializaciji)
+
+import time
+
+from luma.core.interface.serial import  spi 
+import luma.core.interface.parallel as parallel
+from luma.core.render import canvas
+from luma.lcd.device import  st7735
+
+
+#serial = spi(port=0, device=1, gpio_DC=23, gpio_RST=24)
+serial = spi(port=1, device=2, gpio_DC=6, gpio_RST=26)      # spidev1.2  (CE02)
+device = st7735(serial)
+
+
+with canvas(device) as draw:
+    draw.rectangle(device.bounding_box, outline="white", fill="black")  # outline=(r,g,b)
+    draw.text((30, 40), "Hello World", fill="red")                      # fill=(r,g,b)
+
+time.sleep(10)
+
+'''
+#-------------------dodan na serijca, orignal je na i2c naslovu 3c
+import time
+
+from luma.core.interface.serial import i2c, spi
+from luma.core.interface.parallel import bitbang_6800
+from luma.core.render import canvas
+from luma.oled.device import SSD1351
+
+# rev.1 users set port=0
+# substitute spi(device=0, port=0) below if using that interface
+# substitute bitbang_6800(RS=7, E=8, PINS=[25,24,23,27]) below if using that interface
+#serial = i2c(port=1, address=0x3C)
+
+serial = spi(port=1, device=2, gpio_DC=6, gpio_RST=26)      # spidev1.2  (CE02)
+device = ssd1351(serial) 
+
+with canvas(device) as draw:
+    draw.rectangle(device.bounding_box, outline="white", fill="black")  # outline=(r,g,b)
+    draw.text((30, 40), "Hello World", fill="red")                      # fill=(r,g,b)
+
+time.sleep(10)
+
+'''
+
+
+
+	   

@@ -1,0 +1,41 @@
+publika:
+javanski programerji
+
+cilj I.:
+s keytool generirani certifikati v javanskem skladišču certifikatov kot certifikati za spletni strežnik
+  keystore vsebuje cert s ključem; apache http strežnik rabi zadevo v drugačni obliki in v dveh ločenih datotekah ...
+
+cilj II.:
+  uvoz SSL certifikatov v javanski keystore
+
+
+I.
+
+a) uporabiš keytool za pretvorbo  keystore v datoteko obliko p12 :
+
+keytool -importkeystore -srckeystore [originalkeystore] -destkeystore [new_keystore_mystore.p12] -deststoretype PKCS12 -srcstorepass [keystore_password] -deststorepass [new_password] -srcalias [original_alias] -destalias [new_alias] -srckeypass [original_alias_password] -destkeypass [new_password] -noprompt
+
+rezultat je datoteka [new_keystore_mystore.p12]
+ 
+b) uporabiš OpenSLL da izločiš privaten ključ:
+
+    openssl.exe pkcs12 -in new_keystore_mystore.p12 -nocerts -out privatekey.pem
+
+c) uporabiš OpenSLL da izločiš sam certifikat:  
+    
+    openssl.exe pkcs12 -in new_keystore_mystore.p12 -clcerts -nokeys -out publicCert.pem
+
+rezultat:
+   privatekey.pem
+   publicCert.pem
+	
+	
+II.
+
+oglejte si
+https://www.ibm.com/support/knowledgecenter/en/SS6JTX/waveadmin/wave_appf.html, dost. april 2019
+in
+https://knowledge.digicert.com/solution/SO4085.html, dost. april 2019
+
+če se vam da brati, pa je tole celoten postopkek:
+https://support.code42.com/Administrator/6/Configuring/Install_a_CA-signed_SSL_certificate_for_HTTPS_console_access, dost. marec 2021

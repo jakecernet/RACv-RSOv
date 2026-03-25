@@ -1,0 +1,181 @@
+DHT11 + raspbery
+output v terminal
+-------------------------------
+http://www.circuitbasics.com/how-to-set-up-the-dht11-humidity-sensor-on-the-raspberry-pi/
+---------------------------------
+4pin dht11-- 10k pull-up upor med vcc in sign
+
+ pini                                       usb je na tej strani
+	2    vcc   .   gnd   .
+	1    .     .    .   sign
+
+
+----------------------------------------------
+
+
+
+#include <wiringPi.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#define MAXTIMINGS	85
+#define DHTPIN		7                                    // semle gre signal  (GPIO 4)
+int dht11_dat[5] = { 0, 0, 0, 0, 0 };
+ 
+void read_dht11_dat()
+{
+	uint8_t laststate	= HIGH;
+	uint8_t counter		= 0;
+	uint8_t j		= 0, i;
+	float	f; 
+ 
+	dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
+ 
+	pinMode( DHTPIN, OUTPUT );
+	digitalWrite( DHTPIN, LOW );
+	delay( 18 );
+	digitalWrite( DHTPIN, HIGH );
+	delayMicroseconds( 40 );
+	pinMode( DHTPIN, INPUT );
+ 
+	for ( i = 0; i < MAXTIMINGS; i++ )
+	{
+		counter = 0;
+		while ( digitalRead( DHTPIN ) == laststate )
+		{
+			counter++;
+			delayMicroseconds( 1 );
+			if ( counter == 255 )
+			{
+				break;
+			}
+		}
+		laststate = digitalRead( DHTPIN );
+ 
+		if ( counter == 255 )
+			break;
+ 
+		if ( (i >= 4) && (i % 2 == 0) )
+		{
+			dht11_dat[j / 8] <<= 1;
+			if ( counter > 16 )
+				dht11_dat[j / 8] |= 1;
+			j++;
+		}
+	}
+ 
+	if ( (j >= 40) &&
+	     (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
+	{
+		f = dht11_dat[2] * 9. / 5. + 32;
+		printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
+			dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3], f );
+	}else  {
+		printf( "Data not good, skip\n" );
+	}
+}
+ 
+int main( void )
+{
+	printf( "Raspberry Pi wiringPi DHT11 Temperature test program\n" );
+ 
+	if ( wiringPiSetup() == -1 )
+		exit( 1 );
+ 
+	while ( 1 )
+	{
+		read_dht11_dat();
+		delay( 1000 ); 
+	}
+ 
+	return(0);
+}
+
+
+----------------------------
+python test :
+
+sudo apt-get update
+sudo apt-get install build-essential python-dev python-openssl git
+
+cd examples
+sudo ./AdafruitDHT.py 11 4      #(dht11 + gpio-4)
+
+vsaki 2 sekundi
+---------------------------
+
+
+periodično izvajanje skripte :
+
+
+a)  #@reboot command
+     @reboot python /home/pi/myscript.py &   # run myscrio s python ob vsakem rebootu raspberry-aj ?
+
+b) crontab
+sudo crontab -e
+
+# m  h  dan mes danVtednu   command
+  *  *   *   *      *       python /home/path/to/script.py     # zažene skripto vsako minuto  - heh ! manj se ne da, lahko pa daš 2 z zakasnitvjo 30 s 
+  */3  *   *   *      *       python /home/path/to/script.py   # isto, damo šatarta po treh minutah
+  * * * * * sleep 30; mojScrpt.sh
+
+
+* * * * * sleep 00; timeout 15s some_job              # 4 na 14 sekund !
+* * * * * sleep 15; timeout 15s some_job
+* * * * * sleep 30; timeout 15s some_job
+* * * * * sleep 45; timeout 15s some_job
+
+  
+c)  $ watch --precise --interval 30 -- ./your/script/goes/here
+
+d) glej spodaj v ta post : https://stackoverflow.com/questions/9619362/running-a-cron-every-30-seconds
+
+e) zaženeš v skripti :
+
+    while script; do 
+	               sleep 10; 
+				  done
+				  
+	ideja: zaženeš ob boot, potem endles	 zanka
+      while do myscript; sleep 10; done	
+	  
+    while true; do cp file /other/location; sleep 5; done
+	
+	watch -n 5 date
+	
+	
+repeating :
+watch [-dhntv] [--differences[=cumulative]] [--help] [--interval=<n>] 
+             [--no-title] [--version] <command>`
+
+ watch -n1  command    // spi 1 s po izvedenem ukazu
+ 
+---------------------------------------------------
+#!/bin/bash
+# foo.sh                                    - izvajaj v 20 intervalih 
+echo `date +"%H:%M:%S"` >> output.txt;
+sleep 2.5;
+# ---
+
+watch -n20 ./foo.sh
+while sleep 20; do ./foo.sh; done
+while sleep 1; do (./foo.sh &) ; done         #backgroud
+# https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
+
+
+$RANDOM              //bash specific
+$(($RANDOM%500))
+shuf -i MIN-MAX -n COUNT  // gnu tools
+
+tr -d '\040\011\012\015'                 tr -d '[:space:]'   tr 'set1' 'set2'
+sed 's/[[:space:]]//g'
+
+
+---------------------------
+ user input : read + stdin + parameter
+ https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php
+-----
+
+	  
+
+  

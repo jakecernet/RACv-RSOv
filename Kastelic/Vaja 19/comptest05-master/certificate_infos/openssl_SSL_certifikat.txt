@@ -1,0 +1,70 @@
+openssl
+https://www.openssl.org/
+https://wiki.openssl.org/index.php/Binaries
+
+opozorilo:
+instaliraj vedno zadnjo različico (14.03.2019 - 1.1.1b) če ni kjerkoli svetovano drugače ...
+
+
+a) choco install openssl ?
+b) prenesi namesti
+
+------------------------------------------
+postopek:
+
+ // cert za veljavnost enega leta, 2048-bitnim klučem rsa
+
+    openssl req -newkey rsa:2048 -nodes -keyout server.key.pem -x509 -days 365 -out server.certificate.pem
+
+
+postopek je interaktiven:
+  	! za CN uporabite IP računalnika, na katerem boste zaganjali node server (sicer je običajen Common name aka host32.domena.dr ..)
+	zaporedno vnašate :
+	  Country code : SI
+	  State or province : Slovenia
+	  Locality Name : Ljubljana
+	  Organization Name : Vegova Ljubljana
+	  Organizational Unit Name : Janez Novak  [vaše ime, priimek]
+	  Common Name : 192.168.1.1               [kar vrne ipconfig, ifconfig, ip a, ...]
+	  Email Addres : email.email.si                     [enega date]
+	  
+	  
+	  
+	  
+	
+
+rezultat sta datoteki:
+   server.key.pem                 - s privatnim ključem
+   server.certificate.pem         - sam certifikat
+
+test/pregled, kaj je v certifikatu:
+
+   openssl x509 -text -noout -in server.certificate.pem
+   
+notri je nekaj takega:
+
+
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            4f:0a:e1:87:e9:f6:a3:46:14:dd:54:a4:95:66:c9:76:0e:71:74:7f
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = SI, ST = Slovenia, L = Ljubljana, O = Vegova Ljubljana, OU = Janez Novak, CN = 192.168.106.27, emailAddress = email.emai.si
+        Validity
+            Not Before: Mar 14 09:28:44 2019 GMT
+            Not After : Mar 13 09:28:44 2020 GMT
+        Subject: C = SI, ST = Slovenia, L = Ljubljana, O = Vegova Ljubljana, OU = Janez Novak, CN = 192.168.106.27, emailAddress = email.emai.si
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:bf:77:57:a8:bd:ee:5d:56:1a:88:7c:7f:96:78:
+                    8b:33:3c:99:f6:2c:38:19:cb:2e:8b:7b:4f:e1:55:
+                    87:ef:53:89:d1:80:a6:ed:e1:02:a4:31:f0:eb:c8:
+                    9e:ce:35:3a:7f:fb:22:e7:cf:0a:66:5e:dc:9e:94:
+                    82:82:fd:cc:90:d9:90:56:7f:85:76:8e:79:67:ee:
+                    ec:49:71:27:9f:0b:61:e5:b6:1a:78:61:bd:f0:38:
+                    75:54:fc:ef:3e:37:fa:50:e0:8c:d3:bc:a0:92:cd:
+                    a7:b9:d3:4b:88:66:eb:2c:d8:95:60:05:ff:ae:3a:
+                    e7:a6:9b:17:f3:2c:0b:9d:77:70:f6
